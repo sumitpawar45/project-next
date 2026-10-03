@@ -391,15 +391,29 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 #lv .sheet{max-height:90dvh}.lbody{padding:26px 22px 22px}#lv .wlt{padding-bottom:10px}#lv{z-index:120}
 .pl.yt .pbig,.pl.yt .pbm,.pl.yt .pgr,.pl.yt .pm{display:none}.pl.yt .pt{z-index:3;pointer-events:none;background:linear-gradient(rgba(0,0,0,.7),transparent)}.pl.yt .pt button{pointer-events:auto}
 .yta{position:absolute;right:12px;bottom:10px;z-index:3;font-size:12px;color:#fff;background:rgba(0,0,0,.65);padding:6px 12px;border-radius:999px;text-decoration:none}
+
+/* ===== v7 ===== */
+#wel .brand,.wbox .brand{-webkit-text-stroke:0;line-height:1.25;padding:.05em .1em;display:block;text-align:center;white-space:nowrap;overflow:visible;font-size:clamp(28px,8vw,48px)!important}
+.lc .brand{-webkit-text-stroke:0;line-height:1.25;padding:.05em .1em;display:block;text-align:center;white-space:nowrap;font-size:clamp(24px,7vw,32px)!important}
+.brand{line-height:1.15;padding-bottom:.06em}.logo{line-height:1.2}
+.ytb{position:absolute;inset:0;z-index:1}.ytb iframe{width:100%;height:100%;border:0}
+.ytm{position:absolute;inset:0;z-index:2;display:grid;place-content:center;text-align:center;gap:10px;color:#fff;font-size:15px;pointer-events:none}.ytm a{pointer-events:auto;display:inline-block;margin-top:8px;padding:8px 16px;border-radius:999px;background:var(--accent);color:var(--oa);text-decoration:none;font-weight:600;font-size:13px}
+.pl.yt .pt{z-index:4}
+.sg{margin-top:18px}.sg .t{margin:0 0 8px;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.seg{display:flex;border:1.5px solid var(--sk);border-radius:999px;overflow:hidden}.seg button{flex:1;padding:9px;background:none;border:0;color:var(--muted);font-weight:600;cursor:pointer;font-family:inherit;transition:.2s}.seg button.on{background:var(--accent);color:var(--oa)}
+.row2{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);font-size:14px}.ms{color:var(--accent);font-weight:600;font-size:13px}
+.sw{width:46px;height:26px;border-radius:99px;background:var(--border);border:0;position:relative;cursor:pointer;flex:none;transition:.2s}.sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}.sw.on{background:var(--accent)}.sw.on::after{left:23px}
+#sreg{border:1.5px solid var(--sk);border-radius:999px;background:var(--panel);color:var(--fg);padding:8px 12px;font-family:inherit}
+.dr{display:flex;flex-wrap:wrap;gap:8px}.dg{border:1.5px solid var(--sk);border-radius:999px;background:var(--panel);color:var(--fg);padding:8px 14px;cursor:pointer;font-weight:600;font-family:inherit}.dg:hover{background:var(--accent);color:var(--oa)}
+.pel{align-self:center;color:var(--muted);padding:0 2px}.lm{background:var(--accent)!important;color:var(--oa)!important}
 </style>
 </head>
 <body>
-<nav><div style="display:flex;align-items:center;gap:12px"><div class="logo">Watch<span>Next</span></div><button class="faqb" id="faqbtn" aria-label="Frequently asked questions"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 3.5M12 17h.01"/></svg>FAQ</button></div><div style="display:flex;gap:10px;align-items:center"><button class="plb" id="plb" aria-label="Pricing"><svg viewBox="0 0 24 24"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg><span id="plt">Upgrade</span></button><div class="theme" id="theme" role="group" aria-label="Theme"><span class="th" id="th"></span><button data-t="light" aria-label="Light">☀</button><button data-t="dark" aria-label="Dark">☾</button><button data-t="system" class="on" aria-label="System">◐</button></div><div class="pf"><button class="av" id="avb" aria-haspopup="true" aria-expanded="false" aria-label="Open profile">AK</button>
+<nav><div style="display:flex;align-items:center;gap:12px"><div class="logo">Watch<span>Next</span></div><button class="faqb" id="faqbtn" aria-label="Frequently asked questions"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 3.5M12 17h.01"/></svg>FAQ</button></div><div style="display:flex;gap:10px;align-items:center"><button class="plb" id="plb" aria-label="Pricing"><svg viewBox="0 0 24 24"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg><span id="plt">Upgrade</span></button><div class="theme" id="theme" role="group" aria-label="Theme"><span class="th" id="th"></span><button data-t="light" aria-label="Light">☀</button><button data-t="dark" aria-label="Dark">☾</button><button data-t="system" class="on" aria-label="System">◐</button></div><div class="pf"><button class="av" id="avb" aria-haspopup="true" aria-expanded="false" aria-label="Open profile">TU</button>
   <div class="pop" id="pop" role="menu">
-    <div class="ph"><div class="av">AK</div><div><b>Alex Kumar</b><small>alex@moviegram.app</small></div></div>
-    <div class="stats"><div><strong>128</strong>Watched</div><div><strong id="wlc">0</strong>Watchlist</div><div><strong>9</strong>Reviews</div></div>
+    <div class="ph"><div class="av">TU</div><div><b>Testing User</b><small>testinguser@watchnext.app</small></div></div>
+    <div class="stats"><div><strong id="wdc">0</strong>Watched</div><div><strong id="wlc">0</strong>Watchlist</div><div><strong>9</strong>Reviews</div></div>
     <div id="um2" class="cmp"></div>
-    <button class="it" style="animation-delay:.05s">My profile</button>
     <button class="it" style="animation-delay:.1s">My watchlist</button>
     <button class="it" style="animation-delay:.15s">Watch history</button>
     <button class="it" style="animation-delay:.2s">Settings</button>
@@ -441,6 +455,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 <div class="pbm"><div class="prow"><span id="pa">0:00</span><div class="pbar" id="pbar"><div class="pf2" id="pf2"></div><i id="pth"></i></div><span id="pz"></span></div>
 <div class="pctl"><button id="pbk" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M11 5v14l-9-7zM22 5v14l-9-7z"/></svg></button><button class="pp" id="pp" aria-label="Play or pause"><svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button><button id="pfw" aria-label="Forward"><svg viewBox="0 0 24 24"><path d="M13 5v14l9-7zM2 5v14l9-7z"/></svg></button><button id="pv" aria-label="Mute"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9zM15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button class="r" id="pfs" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3M16 21h3a2 2 0 002-2v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div></div></div></div>
 <div class="ov" id="lv"><div class="sheet wide"><button class="x" id="lx" aria-label="Close">×</button><div class="lbody"><div class="wlh"><div><h2 class="tg" id="lt2"></h2><p class="gd" id="ld2"></p></div><div class="wla"><button class="hcl" id="hcl">Clear</button><button id="lp" aria-label="Previous">&#8249;</button><button id="ln2" aria-label="Next">&#8250;</button></div></div><div class="wlt" id="lt"></div><div class="wld" id="ld"></div></div></div></div>
+<div class="ov" id="sv"><div class="sheet"><button class="x" id="sx" aria-label="Close">×</button><div class="mb" id="sb" style="padding-top:26px"></div></div></div>
 <div class="ov" id="fv"><div class="sheet"><button class="x" id="fx" aria-label="Close">×</button><div class="mb" style="padding-top:26px"><h3 style="margin:0 0 4px">Frequently asked questions</h3><small style="color:var(--muted);display:block;margin-bottom:10px">Everything you need to know about WatchNext.</small><div id="pfaq"></div></div></div></div>
 <div class="ov" id="prv" style="z-index:130"><div class="sheet wide"><button class="x" id="pvx" aria-label="Close">×</button><div id="pvb"></div></div></div>
 <div class="ov" id="dv"><div class="sheet"><button class="x" id="dx" aria-label="Close">×</button><div class="mb" style="padding-top:26px"><h3 id="dt" style="margin:0 0 4px;padding-right:30px"></h3><small id="dsub" style="color:var(--muted)">Choose a quality, then start.</small><div id="um1"></div><div class="chips" id="dq" style="margin:14px 0"></div><ul class="tl" id="tl"></ul><div class="rbar"><div class="tr"><div class="bf" id="dbf" style="width:0;animation:none;transition:width .15s linear"></div></div><span id="dpc" style="width:36px;text-align:right">0%</span></div></div><div class="acts"><button id="dgo">Start download</button></div></div></div>
@@ -596,6 +611,46 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   $("lx").onclick=function(){$("lv").classList.remove("open")};$("lv").onclick=function(e){if(e.target==this)this.classList.remove("open")};document.addEventListener("keydown",function(e){if(e.key=="Escape")$("lv").classList.remove("open")});
   Array.prototype.forEach.call(document.querySelectorAll("#pop .it"),function(b){var id=/watchlist/i.test(b.textContent)?"wl":/history/i.test(b.textContent)?"hs":"";if(id)b.onclick=function(){LIB=id;$("lv").classList.add("open");libDraw();$("pop").classList.remove("open")}});
   wlDraw();hsDraw();
+  var WD=[];try{WD=JSON.parse(localStorage.getItem("wn_wd")||"[]")}catch(e){}
+  function markW(m){if(WD.indexOf(m[0])<0){WD.push(m[0]);try{localStorage.setItem("wn_wd",JSON.stringify(WD))}catch(e){}}$("wdc").textContent=WD.length}
+  $("wdc").textContent=WD.length;
+  var YQ=[],YP=null;window.onYouTubeIframeAPIReady=function(){YQ.splice(0).forEach(function(f){f()})};
+  function ytLoad(cb){if(window.YT&&YT.Player)cb();else{YQ.push(cb);if(!document.getElementById("yta")){var s=document.createElement("script");s.id="yta";s.src="https://www.youtube.com/iframe_api";document.head.appendChild(s)}}}
+  function cleanYT(){if(YP&&YP.destroy){try{YP.destroy()}catch(e){}}YP=null;Array.prototype.forEach.call($("pwr").querySelectorAll(".ytb,.ytm"),function(x){x.remove()})}
+  function ytMsg(t,link){var o=$("pwr").querySelector(".ytm");if(o)o.remove();var d=document.createElement("div");d.className="ytm";d.textContent=t;if(link){var a=document.createElement("a");a.href=link;a.target="_blank";a.rel="noopener";a.textContent="Search on YouTube";d.appendChild(document.createElement("br"));d.appendChild(a)}$("pwr").appendChild(d)}
+  function ytFail(m){ytMsg("No playable trailer found for this movie.","https://www.youtube.com/results?search_query="+encodeURIComponent(m[0]+" official trailer"))}
+  function ytPlay(keys,i,m){if(i>=keys.length){ytFail(m);return}if(!$("pl").classList.contains("open"))return;
+    if(YP&&YP.destroy){try{YP.destroy()}catch(e){}}var o=$("pwr").querySelector(".ytb");if(o)o.remove();
+    var box=document.createElement("div");box.className="ytb";box.innerHTML='<div id="ytp"></div>';$("pwr").insertBefore(box,$("pwr").firstChild);
+    var x=$("pwr").querySelector(".ytm");if(x)x.remove();
+    YP=new YT.Player("ytp",{width:"100%",height:"100%",videoId:keys[i],playerVars:{autoplay:SET.auto?1:0,rel:0,playsinline:1,origin:location.origin},events:{onError:function(){ytPlay(keys,i+1,m)}}})}
+  var SET={auto:1,dq:0,region:""};try{SET=Object.assign(SET,JSON.parse(localStorage.getItem("wn_set")||"{}"))}catch(e){}
+  if(SET.region)RG=SET.region;
+  function setSave(){try{localStorage.setItem("wn_set",JSON.stringify(SET))}catch(e){}}
+  var REG=[["US","United States"],["IN","India"],["GB","United Kingdom"],["CA","Canada"],["AU","Australia"],["DE","Germany"],["FR","France"],["JP","Japan"]];
+  function drawSet(){var th=document.documentElement.getAttribute("data-theme")||"system",nm=document.querySelector(".ph b").textContent,em=document.querySelector(".ph small").textContent;
+    var seg=function(a,k,cur){return '<div class="seg">'+a.map(function(x){return '<button data-'+k+'="'+x[0]+'" class="'+(String(x[0])==String(cur)?"on":"")+'">'+x[1]+'</button>'}).join("")+'</div>'};
+    $("sb").innerHTML='<h3 style="margin:0 0 2px">Settings</h3><small style="color:var(--muted)">Make WatchNext yours.</small>'+
+    '<div class="sg"><p class="t">Account</p><div class="row2"><span><b>'+esc(nm)+'</b><br><small style="color:var(--muted)">'+esc(em)+'</small></span><span class="ms">'+WD.length+' watched</span></div></div>'+
+    '<div class="sg"><p class="t">Appearance</p>'+seg([["light","Light"],["dark","Dark"],["system","System"]],"th",th)+'</div>'+
+    '<div class="sg"><p class="t">Playback</p><div class="row2"><span>Autoplay trailers</span><button class="sw '+(SET.auto?"on":"")+'" data-tg="auto" aria-label="Autoplay"></button></div>'+
+    '<div class="row2"><span>Streaming region<br><small style="color:var(--muted)">Used for "Available on"</small></span><select id="sreg">'+REG.map(function(r){return '<option value="'+r[0]+'"'+(r[0]==RG?" selected":"")+'>'+r[1]+'</option>'}).join("")+'</select></div></div>'+
+    '<div class="sg"><p class="t">Download quality</p>'+seg([[0,"720p"],[1,"1080p"],[2,"4K"]],"dq",SET.dq)+'</div>'+
+    '<div class="sg"><p class="t">Your data</p><div class="dr"><button class="dg" data-act="hs">Clear history</button><button class="dg" data-act="wl">Clear watchlist</button><button class="dg" data-act="wd">Reset watched</button></div></div>'}
+  $("sb").onclick=function(e){var t=e.target,d=t.dataset||{};
+    if(d.th){var b=document.querySelector('#theme [data-t="'+d.th+'"]');if(b)b.click();drawSet()}
+    else if(d.tg){SET.auto=SET.auto?0:1;setSave();drawSet()}
+    else if(d.dq!==undefined){SET.dq=+d.dq;setSave();drawSet()}
+    else if(d.act=="hs"){HS=[];try{localStorage.setItem("wn_hs","[]")}catch(x){}toast("History cleared")}
+    else if(d.act=="wl"){WL=[];wlSave();wlDraw();wlBtn();toast("Watchlist cleared")}
+    else if(d.act=="wd"){WD=[];try{localStorage.setItem("wn_wd","[]")}catch(x){}$("wdc").textContent=0;drawSet();toast("Watched count reset")}};
+  $("sb").onchange=function(e){if(e.target.id=="sreg"){RG=e.target.value;SET.region=RG;DET={};DETP={};setSave();toast("Region set to "+e.target.options[e.target.selectedIndex].text)}};
+  $("sx").onclick=function(){$("sv").classList.remove("open")};$("sv").onclick=function(e){if(e.target==this)this.classList.remove("open")};document.addEventListener("keydown",function(e){if(e.key=="Escape")$("sv").classList.remove("open")});
+  Array.prototype.forEach.call(document.querySelectorAll("#pop .it"),function(b){if(/settings/i.test(b.textContent))b.onclick=function(){drawSet();$("sv").classList.add("open");$("pop").classList.remove("open")}});
+  var NP={},END={};
+  function sig(){var q=st.q.trim();return q.length>1?"s:"+q.toLowerCase():(st.g!="All"&&GID[st.g]?"g:"+st.g:"t")}
+  function loadMore(btn){if(!LIVE)return;var q=st.q.trim(),s=sig(),qs=s[0]=="s"?"type=search&q="+encodeURIComponent(q):s[0]=="g"?"type=genre&g="+GID[st.g]:"type=trending",p=(NP[s]||1)+1;btn.disabled=true;btn.textContent="Loading\u2026";
+    api(qs+"&page="+p).then(function(d){var n0=M.length;add(d.results);NP[s]=p;if(s[0]=="s"){var k=q.toLowerCase();RS[k]=(RS[k]||[]).concat(d.results.map(function(t){return t.id}))}if(!d.results.length||M.length==n0)END[s]=true;render()}).catch(function(){btn.disabled=false;btn.textContent="Load more movies";toast("Could not load more movies")})}
   function info(m){var d=DET[m[6]]||{},el=$("inf");
     var ov=d.overview||"A "+m[2][0].toLowerCase()+(m[2][1]?" with a touch of "+m[2][1].toLowerCase():"")+" that keeps you hooked from the first scene to the last.";
     var ac=d.cast&&d.cast.length?d.cast:pick(ACT,"a",4,m[0]),pl=d.platforms&&d.platforms.length?d.platforms:pick(PLT,"p",3,m[0]);
@@ -611,7 +666,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   function pager(tot,n){var P=$("pager");P.innerHTML="";if(!n)return;
     function b(t,pg,on,dis,lab,cls){var e=document.createElement("button");e.textContent=t;e.className=(on?"on ":"")+(cls||"");e.disabled=!!dis;e.setAttribute("aria-label",lab||"Page "+t);e.onclick=function(){goPage(pg)};P.appendChild(e)}
     var a=(st.pg-1)*10+1,z=Math.min(st.pg*10,n);
-    b("\u2039 Previous",st.pg-1,0,st.pg==1,"Previous page","nv");for(var i=1;i<=tot;i++)b(i,i,i==st.pg);b("Next \u203A",st.pg+1,0,st.pg>=tot,"Next page","nv");
+    b("\u2039 Previous",st.pg-1,0,st.pg==1,"Previous page","nv");var sh=[];for(var i=1;i<=tot;i++)if(i==1||i==tot||Math.abs(i-st.pg)<=2)sh.push(i);var pv=0;sh.forEach(function(i){if(i-pv>1){var e=document.createElement("span");e.textContent="…";e.className="pel";P.appendChild(e)}b(i,i,i==st.pg);pv=i});b("Next \u203A",st.pg+1,0,st.pg>=tot,"Next page","nv");if(LIVE&&!END[sig()]){var lm=document.createElement("button");lm.className="nv lm";lm.textContent="Load more movies";lm.onclick=function(){loadMore(lm)};P.appendChild(lm)}
     var f=document.createElement("div");f.className="pinf";f.textContent="Showing "+a+"\u2013"+z+" of "+n+" movies \u00B7 Page "+st.pg+" of "+tot;P.appendChild(f)}
   function goPage(n){clearTimeout(T);skel();pill();$("results").scrollIntoView({behavior:"smooth"});T=setTimeout(function(){st.pg=n;render()},350)}
   function net(){var o=!navigator.onLine;$("off").hidden=!o;$("grid").style.display=o?"none":"";$("pager").style.display=o?"none":""}
@@ -637,16 +692,16 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   function setPlay(v){playing=v;$("pl").classList.toggle("paused",!v);$("pp").innerHTML=v?I.pause:I.play;$("pb").innerHTML=I.play}
   function openP(m){clearInterval(pT);pos=0;dur=(hs(m[0])%40+90)*60;$("pm").style.backgroundImage=grad(m);$("pn").textContent=m[0];$("ps").textContent=m[1]+" \u00B7 "+m[2].join(", ")+" \u00B7 HD";$("pz").textContent=ft(dur);sync();$("pl").classList.add("open");setPlay(true);
     pT=setInterval(function(){if(!playing)return;pos+=20;if(pos>=dur){pos=dur;setPlay(false)}sync()},250);
-    Array.prototype.forEach.call($("pwr").querySelectorAll("iframe,.yta"),function(x){x.remove()});$("pl").classList.remove("yt");
-    if(LIVE&&m[6])api("type=trailer&id="+m[6]).then(function(r){if(!$("pl").classList.contains("open")||cur!==m)return;if(!r.key){toast("No trailer found for this movie");return}var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+r.key+"?autoplay=1&rel=0";f.allow="autoplay; encrypted-media; fullscreen";f.allowFullscreen=true;f.style.cssText="position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1";$("pwr").insertBefore(f,$("pwr").firstChild);var a=document.createElement("a");a.className="yta";a.href="https://www.youtube.com/watch?v="+r.key;a.target="_blank";a.rel="noopener";a.textContent="Open on YouTube";$("pwr").appendChild(a);$("pl").classList.add("yt");setPlay(false)}).catch(function(){toast("Trailer could not load. Update api/movies.js")})}
-  function closeP(){clearInterval(pT);setPlay(false);Array.prototype.forEach.call($("pwr").querySelectorAll("iframe,.yta"),function(x){x.remove()});$("pl").classList.remove("yt","open")}
+    cleanYT();$("pl").classList.add("yt");ytMsg("Loading trailer\u2026");markW(m);
+    if(LIVE&&m[6])api("type=trailer&id="+m[6]).then(function(r){if(!$("pl").classList.contains("open")||cur!==m)return;var k=r.keys&&r.keys.length?r.keys:(r.key?[r.key]:[]);if(!k.length){ytFail(m);return}ytLoad(function(){ytPlay(k,0,m)})}).catch(function(){ytFail(m)});else ytFail(m)}
+  function closeP(){clearInterval(pT);setPlay(false);cleanYT();$("pl").classList.remove("yt","open")}
   $("pc").onclick=closeP;$("pl").onclick=function(e){if(e.target==this)closeP()};
   $("pp").onclick=$("pb").onclick=$("pm").onclick=function(){if(pos>=dur)pos=0;setPlay(!playing)};
   $("pbk").onclick=function(){pos=Math.max(0,pos-300);sync()};$("pfw").onclick=function(){pos=Math.min(dur,pos+300);sync()};
   $("pbar").onclick=function(e){var r=this.getBoundingClientRect();pos=Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*dur;sync()};
   $("pv").onclick=function(){this.style.opacity=this.style.opacity==".4"?"1":".4"};
   $("pfs").onclick=function(){var e=$("pwr");try{if(document.fullscreenElement)document.exitFullscreen();else e.requestFullscreen()}catch(x){}};
-  var DQ=[["720p","1.2 GB"],["1080p","2.8 GB"],["4K","9.5 GB"]],dqi=1,dT=null,dS=-1,dP=0,dtm=[];
+  var DQ=[["720p","500 px poster"],["1080p","780 px poster"],["4K","Original size"]],dqi=1,dT=null,dS=-1,dP=0,dtm=[];
   var STEPS=[["Queued","Waiting for a download slot"],["Downloading","Fetching the poster file"],["Processing","Preparing your file"],["Ready","Saved to your Downloads folder"]];
   function saveBlob(b,n){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=n;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
   function realDL(m){var nm=(m[0].replace(/[^\w\- ]+/g,"").trim()||"movie");
@@ -656,14 +711,29 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   function drawTL(){$("tl").innerHTML=STEPS.map(function(x,i){var c=dS>i?"done":dS==i?"act":"";return '<li class="'+c+'"><span class="dot">'+(dS>i?"\u2713":"")+'</span><div><b>'+x[0]+'</b><small>'+(dS>i&&dtm[i]?dtm[i]+" \u00B7 ":"")+x[1]+'</small></div></li>'}).join("")}
   function drawQ(){var q=$("dq");q.innerHTML="";DQ.forEach(function(d,i){var b=document.createElement("button"),lk=i>PLAN;b.className="chip"+(i==dqi&&!lk?" on":"")+(lk?" lock":"");b.innerHTML=d[0]+" \u00B7 "+d[1]+(lk?LOCK:"");b.disabled=dS>=0&&dS<4;b.title=lk?"Upgrade to unlock "+d[0]:"";b.onclick=function(){if(lk)openPricing(i);else{dqi=i;drawQ()}};q.appendChild(b)})}
   function prog(v){dP=v;$("dbf").style.width=v+"%";$("dpc").textContent=Math.round(v)+"%"}
-  function openD(m){clearInterval(dT);dS=-1;dP=0;dtm=[];$("dt").textContent="Download poster: "+m[0];$("dsub").textContent="Choose a quality, then start.";$("dgo").textContent="Start download";prog(0);drawQ();drawTL();$("dv").classList.add("open")}
+  function openD(m){dqi=Math.min(SET.dq||0,PLAN);clearInterval(dT);dS=-1;dP=0;dtm=[];$("dt").textContent="Download poster: "+m[0];$("dsub").textContent="Choose a quality, then start.";$("dgo").textContent="Start download";prog(0);drawQ();drawTL();$("dv").classList.add("open")}
   function closeD(){clearInterval(dT);if(dS>=0&&dS<4){dS=-1}$("dv").classList.remove("open")}
   function adv(n){dtm[dS]=now();dS=n;drawTL()}
+  var DAB=null,DLB=0;
+  function fmtB(n){return n>=1048576?(n/1048576).toFixed(2)+" MB":Math.max(1,Math.round(n/1024))+" KB"}
   $("dgo").onclick=function(){
-    if(dS==4){closeD();return}
-    if(dS>=0){clearInterval(dT);dS=-1;prog(0);drawQ();drawTL();this.textContent="Start download";$("dsub").textContent="Cancelled. Choose a quality, then start.";return}
-    if(dqi>PLAN){openPricing(dqi);return}if(usedGB()+parseFloat(DQ[dqi][1])>LIM){toast("Not enough storage. Remove a download first.");return}this.textContent="Cancel";$("dsub").textContent="Downloading "+DQ[dqi][0]+" \u00B7 "+DQ[dqi][1];dS=0;drawQ();drawTL();
-    dT=setTimeout(function(){adv(1);dT=setInterval(function(){prog(Math.min(100,dP+1.5+Math.random()*3));if(dP>=100){clearInterval(dT);adv(2);dT=setTimeout(function(){dtm[2]=now();dS=3;drawTL();dT=setTimeout(function(){dtm[3]=now();dS=4;drawTL();$("dgo").textContent="Done";$("dsub").textContent="Saved to your Downloads folder.";realDL(cur);addDL();toast("Download ready")},700)},1000)}},120)},700)};
+    var b=this;if(dS==4){closeD();return}
+    if(dS>=0){if(DAB)DAB.abort();clearInterval(dT);dS=-1;prog(0);drawQ();drawTL();b.textContent="Start download";$("dsub").textContent="Cancelled. Choose a quality, then start.";return}
+    if(dqi>PLAN){openPricing(dqi);return}
+    var m=cur,nm=(m[0].replace(/[^\w\- ]+/g,"").trim()||"movie"),url=m[7]?m[7].replace("/w342/","/"+["w500","w780","original"][dqi||0]+"/"):null,t0=Date.now();
+    b.textContent="Cancel";dS=0;drawQ();drawTL();$("dsub").textContent="Connecting\u2026";DAB=window.AbortController?new AbortController():null;
+    function fin(bl,name){adv(2);prog(100);dT=setTimeout(function(){dtm[2]=now();dS=3;drawTL();dT=setTimeout(function(){dtm[3]=now();dS=4;drawTL();b.textContent="Done";DLB=bl.size;$("dsub").textContent="Saved "+name+" ("+fmtB(bl.size)+") to your Downloads folder.";saveBlob(bl,name);addDL();toast("Download ready")},300)},400)}
+    adv(1);
+    if(!url){var d=DET[m[6]]||{};fin(new Blob(["Title: "+m[0]+"\nYear: "+m[1]+"\nGenres: "+m[2].join(", ")+"\nRating: "+m[3]+"/10\n"+(d.overview?"\n"+d.overview+"\n":"")+"\nFrom WatchNext. Movie data courtesy of TMDB.\n"],{type:"text/plain"}),nm+" details.txt");return}
+    fetch(url,DAB?{signal:DAB.signal}:{}).then(function(r){if(!r.ok)throw new Error(r.status);var tot=+r.headers.get("content-length")||0;
+      if(!r.body||!r.body.getReader)return r.blob().then(function(bl){fin(bl,nm+" poster.jpg")});
+      var rd=r.body.getReader(),ch=[],got=0;
+      (function pump(){rd.read().then(function(x){if(x.done){fin(new Blob(ch,{type:"image/jpeg"}),nm+" poster.jpg");return}
+        ch.push(x.value);got+=x.value.length;var s=(Date.now()-t0)/1000||.1;prog(tot?Math.min(99,got/tot*100):Math.min(95,dP+2));
+        $("dsub").textContent=fmtB(got)+(tot?" of "+fmtB(tot):"")+" \u00B7 "+fmtB(got/s)+"/s";pump()}).catch(fail)})()
+    }).catch(fail);
+    function fail(e){if(e&&e.name=="AbortError")return;dS=-1;prog(0);drawQ();drawTL();b.textContent="Start download";$("dsub").textContent="Download failed. Check your connection and try again."}
+  };
   $("dx").onclick=closeD;$("dv").onclick=function(e){if(e.target==this)closeD()};
   $("bw").onclick=function(){openP(cur)};$("bd").onclick=function(){openD(cur)};
   document.addEventListener("keydown",function(e){if(e.key=="Escape"){closeP();closeD()}});
@@ -676,7 +746,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
     function sub(){var e=$("le").value.trim(),p=$("lp").value;if(!/^\S+@\S+\.\S+$/.test(e)){$("lerr").textContent="Enter a valid email address.";return}if(p.length<4){$("lerr").textContent="Password must be at least 4 characters.";return}$("lerr").textContent="";var n=e.split("@")[0].replace(/[._-]+/g," ").replace(/\b\w/g,function(c){return c.toUpperCase()});fin(n,e,$("ls"))}
     $("ls").onclick=sub;$("lp").addEventListener("keydown",function(k){if(k.key=="Enter")sub()});$("le").addEventListener("keydown",function(k){if(k.key=="Enter")sub()});
     $("lt").onclick=function(){var t=$("lp").type=="password";$("lp").type=t?"text":"password";this.textContent=t?"Hide":"Show"};
-    $("lg").onclick=function(){fin("Alex Kumar","alex@gmail.com",this)};$("la").onclick=function(){fin("Alex Kumar","alex@icloud.com",this)};$("lgu").onclick=function(){fin("Guest","guest@moviegram.app")}}
+    $("lg").onclick=function(){fin("Testing User","testinguser@watchnext.app",this)};$("la").onclick=function(){fin("Testing User","testinguser@watchnext.app",this)};$("lgu").onclick=function(){fin("Guest","guest@watchnext.app")}}
   var sg=document.createElement("div");sg.className="sug";sg.id="sug";document.body.appendChild(sg);
   var SG={i:-1,items:[]},SI={movie:'<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M3 15h4M17 9h4M17 15h4"/></svg>',genre:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>',act:'<svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',search:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/></svg>'},SC={movie:"#a855f7",genre:"#3b82f6",act:"#f97316",search:"#22c55e"};
   function esc(t){return t.replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
@@ -711,7 +781,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   function usedGB(){return DL.reduce(function(a,d){return a+d.gb},0)}
   function meterHTML(){var u=usedGB();return '<div class="um"><div class="uh"><b>Download storage</b><span>'+u.toFixed(1)+' / '+LIM+' GB</span></div><div class="ub">'+DL.map(function(d,i){return '<div class="us" title="'+esc(d.n)+' \u00B7 '+d.gb+' GB" style="width:'+(d.gb/LIM*100)+'%;background:'+PAL[i%PAL.length]+'"></div>'}).join("")+'</div><div class="ule">'+DL.map(function(d,i){return '<span><i style="background:'+PAL[i%PAL.length]+'"></i>'+esc(d.n)+' '+d.gb+' GB <button data-r="'+i+'" aria-label="Remove '+esc(d.n)+'">\u00D7</button></span>'}).join("")+'</div><small>'+(LIM-u).toFixed(1)+' GB free \u00B7 '+DL.length+' movie'+(DL.length==1?"":"s")+' downloaded</small></div>'}
   function meters(){["um1","um2"].forEach(function(id){var e=$(id);e.innerHTML=meterHTML();e.querySelectorAll("[data-r]").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();DL.splice(+b.dataset.r,1);meters()}})})}
-  function addDL(){var gb=parseFloat(DQ[dqi][1]),i=DL.findIndex(function(d){return d.n==cur[0]});if(i>-1)DL[i].gb=gb;else DL.push({n:cur[0],gb:gb});meters()}
+  function addDL(){var gb=(DLB||500000)/1073741824,i=DL.findIndex(function(d){return d.n==cur[0]});if(i>-1)DL[i].gb=gb;else DL.push({n:cur[0],gb:gb});meters()}
   meters();
   var PLAN=0,YR=true,NEED=-1;dqi=0;
   var LOCK='<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg>',CHK='<svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>';

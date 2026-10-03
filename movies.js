@@ -7,6 +7,7 @@ module.exports = async (req, res) => {
   if (!key) return res.status(500).json({ error: "TMDB_KEY is not set" });
 
   const { type, q, id, g } = req.query;
+  const pg = Math.min(100, Math.max(1, parseInt(req.query.page) || 1));
   const u = (path, params = {}) =>
     `${T}${path}?` + new URLSearchParams({ api_key: key, language: "en-US", include_adult: "false", ...params });
 
@@ -25,23 +26,24 @@ module.exports = async (req, res) => {
     try {
       const d = await fetch(u(`/movie/${id}/videos`)).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
       const yt = (d.results || []).filter(v => v.site === "YouTube");
-      const v = yt.find(x => x.type === "Trailer" && x.official) || yt.find(x => x.type === "Trailer") || yt[0];
+      const rank = x => (x.type === "Trailer" ? 0 : 2) + (x.official ? 0 : 1);
+      const keys = yt.sort((a, b) => rank(a) - rank(b)).map(x => x.key).slice(0, 5);
       res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate");
-      return res.status(200).json({ key: v ? v.key : null });
+      return res.status(200).json({ key: keys[0] || null, keys });
     } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
   }
 
   let urls;
-  if (type === "trending") urls = [1, 2, 3].map(p => u("/trending/movie/week", { page: p }));
-  else if (type === "search" && q) urls = [u("/search/movie", { query: String(q).slice(0, 100) })];
+  if (type === "trending") urls = [1, 2, 3].map(p => u("/trending/movie/week", { page: (pg - 1) * 3 + p }));
+  else if (type === "search" && q) urls = [u("/search/movie", { query: String(q).slice(0, 100), page: pg })];
   else if (type === "similar" && /^\d+$/.test(id)) urls = [u(`/movie/${id}/recommendations`)];
   else if (type === "genre" && /^\d+$/.test(g))
-    urls = [1, 2].map(p => u("/discover/movie", { with_genres: g, sort_by: "popularity.desc", "vote_count.gte": "200", page: p }));
+    urls = [1, 2].map(p => u("/discover/movie", { with_genres: g, sort_by: "popularity.desc", "vote_count.gte": "200", page: (pg - 1) * 2 + p }));
   else return res.status(400).json({ error: "bad request" });
 
   try {
     const pages = await Promise.all(
-      urls.map(x => fetch(x).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }))
+      urls.map(x => fetch(x).then(r => { if (!r.ok) { if (pg > 1) return { results: [] }; throw new Error(r.status); } return r.json(); }))
     );
     const seen = new Set(), results = [];
     pages.forEach(p => (p.results || []).forEach(t => {

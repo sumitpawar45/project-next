@@ -390,6 +390,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 @media(prefers-reduced-motion:reduce){.gc{animation:none}}
 #lv .sheet{max-height:90dvh}.lbody{padding:26px 22px 22px}#lv .wlt{padding-bottom:10px}#lv{z-index:120}
 .pl.yt .pbig,.pl.yt .pbm,.pl.yt .pgr,.pl.yt .pm{display:none}.pl.yt .pt{z-index:3;pointer-events:none;background:linear-gradient(rgba(0,0,0,.7),transparent)}.pl.yt .pt button{pointer-events:auto}
+.yta{position:absolute;right:12px;bottom:10px;z-index:3;font-size:12px;color:#fff;background:rgba(0,0,0,.65);padding:6px 12px;border-radius:999px;text-decoration:none}
 </style>
 </head>
 <body>
@@ -539,7 +540,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
     pl.forEach(function(m,i){
       var c=document.createElement("div");c.className="card"+(m===st.sel?" sel":"");c.style.animationDelay=(i*step)+"s";
       c.innerHTML='<div class="poster" style="background:'+bg(m)+'">'+(m[7]?"":m[0])+'</div><div class="meta"><div class="mi"><h3>'+m[0]+'</h3><small>'+m[1]+' \u00B7 '+m[2].join(", ")+'</small><p class="syn">A '+m[2][0].toLowerCase()+(m[2][1]?" with a touch of "+m[2][1].toLowerCase():"")+', loved by viewers and rated '+m[3]+' out of 10.</p><div class="tags">'+m[2].map(function(g){return '<span>'+g+'</span>'}).join("")+'</div></div><div class="side"><span class="rt">\u2605 '+m[3]+'</span><button class="lw">Play</button></div></div>';c.querySelector(".lw").onclick=function(e){e.stopPropagation();openP(m)};
-      c.onclick=function(){c.classList.remove("blr");void c.offsetWidth;c.classList.add("blr");openM(m)};
+      c.querySelector(".poster").style.background=bg(m);c.onclick=function(){c.classList.remove("blr");void c.offsetWidth;c.classList.add("blr");openM(m)};
       g.appendChild(c)});
     var r=$("reco");
     if(st.sel){var s=similar(st.sel);r.style.display="block";r.innerHTML="Because you picked <b>"+st.sel[0]+"</b>, you might like:<br>"+s.map(function(x,i){return '<button data-i="'+M.indexOf(x)+'">'+x[0]+' ★ '+x[3]+'</button>'}).join("");
@@ -636,9 +637,9 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   function setPlay(v){playing=v;$("pl").classList.toggle("paused",!v);$("pp").innerHTML=v?I.pause:I.play;$("pb").innerHTML=I.play}
   function openP(m){clearInterval(pT);pos=0;dur=(hs(m[0])%40+90)*60;$("pm").style.backgroundImage=grad(m);$("pn").textContent=m[0];$("ps").textContent=m[1]+" \u00B7 "+m[2].join(", ")+" \u00B7 HD";$("pz").textContent=ft(dur);sync();$("pl").classList.add("open");setPlay(true);
     pT=setInterval(function(){if(!playing)return;pos+=20;if(pos>=dur){pos=dur;setPlay(false)}sync()},250);
-    var o=$("pwr").querySelector("iframe");if(o)o.remove();$("pl").classList.remove("yt");
-    if(LIVE&&m[6])api("type=trailer&id="+m[6]).then(function(r){if(!r.key||!$("pl").classList.contains("open")||cur!==m)return;var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+r.key+"?autoplay=1&rel=0";f.allow="autoplay; encrypted-media; fullscreen";f.allowFullscreen=true;f.style.cssText="position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1";$("pwr").insertBefore(f,$("pwr").firstChild);$("pl").classList.add("yt");setPlay(false)}).catch(function(){})}
-  function closeP(){clearInterval(pT);setPlay(false);var f=$("pwr").querySelector("iframe");if(f)f.remove();$("pl").classList.remove("yt","open")}
+    Array.prototype.forEach.call($("pwr").querySelectorAll("iframe,.yta"),function(x){x.remove()});$("pl").classList.remove("yt");
+    if(LIVE&&m[6])api("type=trailer&id="+m[6]).then(function(r){if(!$("pl").classList.contains("open")||cur!==m)return;if(!r.key){toast("No trailer found for this movie");return}var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+r.key+"?autoplay=1&rel=0";f.allow="autoplay; encrypted-media; fullscreen";f.allowFullscreen=true;f.style.cssText="position:absolute;inset:0;width:100%;height:100%;border:0;z-index:1";$("pwr").insertBefore(f,$("pwr").firstChild);var a=document.createElement("a");a.className="yta";a.href="https://www.youtube.com/watch?v="+r.key;a.target="_blank";a.rel="noopener";a.textContent="Open on YouTube";$("pwr").appendChild(a);$("pl").classList.add("yt");setPlay(false)}).catch(function(){toast("Trailer could not load. Update api/movies.js")})}
+  function closeP(){clearInterval(pT);setPlay(false);Array.prototype.forEach.call($("pwr").querySelectorAll("iframe,.yta"),function(x){x.remove()});$("pl").classList.remove("yt","open")}
   $("pc").onclick=closeP;$("pl").onclick=function(e){if(e.target==this)closeP()};
   $("pp").onclick=$("pb").onclick=$("pm").onclick=function(){if(pos>=dur)pos=0;setPlay(!playing)};
   $("pbk").onclick=function(){pos=Math.max(0,pos-300);sync()};$("pfw").onclick=function(){pos=Math.min(dur,pos+300);sync()};
@@ -646,19 +647,23 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   $("pv").onclick=function(){this.style.opacity=this.style.opacity==".4"?"1":".4"};
   $("pfs").onclick=function(){var e=$("pwr");try{if(document.fullscreenElement)document.exitFullscreen();else e.requestFullscreen()}catch(x){}};
   var DQ=[["720p","1.2 GB"],["1080p","2.8 GB"],["4K","9.5 GB"]],dqi=1,dT=null,dS=-1,dP=0,dtm=[];
-  var STEPS=[["Queued","Waiting for a download slot"],["Downloading","Fetching the movie file"],["Processing","Optimising for offline play"],["Ready","Saved to your Downloads"]];
+  var STEPS=[["Queued","Waiting for a download slot"],["Downloading","Fetching the poster file"],["Processing","Preparing your file"],["Ready","Saved to your Downloads folder"]];
+  function saveBlob(b,n){var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=n;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},1500)}
+  function realDL(m){var nm=(m[0].replace(/[^\w\- ]+/g,"").trim()||"movie");
+    if(m[7]){var big=m[7].replace("/w342/","/"+["w500","w780","original"][dqi||0]+"/");fetch(big).then(function(r){if(!r.ok)throw 0;return r.blob()}).then(function(b){saveBlob(b,nm+" poster.jpg")}).catch(function(){window.open(big,"_blank")});return}
+    var d=DET[m[6]]||{},t="Title: "+m[0]+"\nYear: "+m[1]+"\nGenres: "+m[2].join(", ")+"\nRating: "+m[3]+"/10\n"+(d.overview?"\n"+d.overview+"\n":"")+"\nFrom WatchNext. Movie data courtesy of TMDB.\n";saveBlob(new Blob([t],{type:"text/plain"}),nm+" details.txt")}
   function now(){var d=new Date();return d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
   function drawTL(){$("tl").innerHTML=STEPS.map(function(x,i){var c=dS>i?"done":dS==i?"act":"";return '<li class="'+c+'"><span class="dot">'+(dS>i?"\u2713":"")+'</span><div><b>'+x[0]+'</b><small>'+(dS>i&&dtm[i]?dtm[i]+" \u00B7 ":"")+x[1]+'</small></div></li>'}).join("")}
   function drawQ(){var q=$("dq");q.innerHTML="";DQ.forEach(function(d,i){var b=document.createElement("button"),lk=i>PLAN;b.className="chip"+(i==dqi&&!lk?" on":"")+(lk?" lock":"");b.innerHTML=d[0]+" \u00B7 "+d[1]+(lk?LOCK:"");b.disabled=dS>=0&&dS<4;b.title=lk?"Upgrade to unlock "+d[0]:"";b.onclick=function(){if(lk)openPricing(i);else{dqi=i;drawQ()}};q.appendChild(b)})}
   function prog(v){dP=v;$("dbf").style.width=v+"%";$("dpc").textContent=Math.round(v)+"%"}
-  function openD(m){clearInterval(dT);dS=-1;dP=0;dtm=[];$("dt").textContent="Download "+m[0];$("dsub").textContent="Choose a quality, then start.";$("dgo").textContent="Start download";prog(0);drawQ();drawTL();$("dv").classList.add("open")}
+  function openD(m){clearInterval(dT);dS=-1;dP=0;dtm=[];$("dt").textContent="Download poster: "+m[0];$("dsub").textContent="Choose a quality, then start.";$("dgo").textContent="Start download";prog(0);drawQ();drawTL();$("dv").classList.add("open")}
   function closeD(){clearInterval(dT);if(dS>=0&&dS<4){dS=-1}$("dv").classList.remove("open")}
   function adv(n){dtm[dS]=now();dS=n;drawTL()}
   $("dgo").onclick=function(){
     if(dS==4){closeD();return}
     if(dS>=0){clearInterval(dT);dS=-1;prog(0);drawQ();drawTL();this.textContent="Start download";$("dsub").textContent="Cancelled. Choose a quality, then start.";return}
     if(dqi>PLAN){openPricing(dqi);return}if(usedGB()+parseFloat(DQ[dqi][1])>LIM){toast("Not enough storage. Remove a download first.");return}this.textContent="Cancel";$("dsub").textContent="Downloading "+DQ[dqi][0]+" \u00B7 "+DQ[dqi][1];dS=0;drawQ();drawTL();
-    dT=setTimeout(function(){adv(1);dT=setInterval(function(){prog(Math.min(100,dP+1.5+Math.random()*3));if(dP>=100){clearInterval(dT);adv(2);dT=setTimeout(function(){dtm[2]=now();dS=3;drawTL();dT=setTimeout(function(){dtm[3]=now();dS=4;drawTL();$("dgo").textContent="Done";$("dsub").textContent="Download complete (demo, no file is saved).";addDL();toast("Download ready")},700)},1000)}},120)},700)};
+    dT=setTimeout(function(){adv(1);dT=setInterval(function(){prog(Math.min(100,dP+1.5+Math.random()*3));if(dP>=100){clearInterval(dT);adv(2);dT=setTimeout(function(){dtm[2]=now();dS=3;drawTL();dT=setTimeout(function(){dtm[3]=now();dS=4;drawTL();$("dgo").textContent="Done";$("dsub").textContent="Saved to your Downloads folder.";realDL(cur);addDL();toast("Download ready")},700)},1000)}},120)},700)};
   $("dx").onclick=closeD;$("dv").onclick=function(e){if(e.target==this)closeD()};
   $("bw").onclick=function(){openP(cur)};$("bd").onclick=function(){openD(cur)};
   document.addEventListener("keydown",function(e){if(e.key=="Escape"){closeP();closeD()}});

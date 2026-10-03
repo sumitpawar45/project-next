@@ -21,6 +21,16 @@ module.exports = async (req, res) => {
     } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
   }
 
+  if (type === "trailer" && /^\d+$/.test(id)) {
+    try {
+      const d = await fetch(u(`/movie/${id}/videos`)).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+      const yt = (d.results || []).filter(v => v.site === "YouTube");
+      const v = yt.find(x => x.type === "Trailer" && x.official) || yt.find(x => x.type === "Trailer") || yt[0];
+      res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate");
+      return res.status(200).json({ key: v ? v.key : null });
+    } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
+  }
+
   let urls;
   if (type === "trending") urls = [1, 2, 3].map(p => u("/trending/movie/week", { page: p }));
   else if (type === "search" && q) urls = [u("/search/movie", { query: String(q).slice(0, 100) })];

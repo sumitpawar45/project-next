@@ -1,37 +1,50 @@
 // Vercel serverless function: /api/movies
 // Keeps your TMDB key on the server so visitors never see it.
+// TV shows use NEGATIVE ids (id = -tmdbId) so movies and shows never collide.
 const T = "https://api.themoviedb.org/3";
 
 module.exports = async (req, res) => {
   const key = process.env.TMDB_KEY;
   if (!key) return res.status(500).json({ error: "TMDB_KEY is not set" });
 
-  const { type, q, id, g } = req.query;
+  const { type, q, g } = req.query;
+  const rawId = String(req.query.id || "");
+  const isTV = /^-\d+$/.test(rawId);
+  const id = isTV ? rawId.slice(1) : rawId;
+  const kindTV = req.query.kind === "tv";
   const pg = Math.min(100, Math.max(1, parseInt(req.query.page) || 1));
   const u = (path, params = {}) =>
     `${T}${path}?` + new URLSearchParams({ api_key: key, language: "en-US", include_adult: "false", ...params });
+  const getJson = url => fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  const mt = isTV ? "tv" : "movie";
 
   if (type === "detail" && /^\d+$/.test(id)) {
     try {
-      const d = await fetch(u(`/movie/${id}`, { append_to_response: "credits,watch/providers,videos" })).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+      const d = await getJson(u(`/${mt}/${id}`, { append_to_response: "credits,watch/providers,videos" }));
       const reg = /^[A-Z]{2}$/.test(req.query.region) ? req.query.region : "US";
       const wp = ((d["watch/providers"] || {}).results || {})[reg] || {};
       const names = [...(wp.flatrate || []), ...(wp.rent || []), ...(wp.buy || [])].map(p => p.provider_name);
       const cr = d.credits || {};
       const castFull = (cr.cast || []).slice(0, 12).map(c => ({ n: c.name, c: c.character || "", p: c.profile_path ? "https://image.tmdb.org/t/p/w185" + c.profile_path : "" }));
-      const dir = (cr.crew || []).filter(c => c.job === "Director").map(c => c.name).slice(0, 2).join(", ");
+      const dir = isTV
+        ? (d.created_by || []).map(c => c.name).slice(0, 3).join(", ")
+        : (cr.crew || []).filter(c => c.job === "Director").map(c => c.name).slice(0, 2).join(", ");
       const rank = x => (x.type === "Trailer" ? 0 : 2) + (x.official ? 0 : 1);
       const trailers = ((d.videos || {}).results || []).filter(v => v.site === "YouTube")
         .sort((a, b) => rank(a) - rank(b)).slice(0, 6).map(v => ({ k: v.key, n: v.name, t: v.type }));
-      const release = d.release_date ? new Date(d.release_date + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }) : "";
+      const rd = isTV ? d.first_air_date : d.release_date;
+      const release = rd ? new Date(rd + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }) : "";
+      const runtime = isTV ? ((d.episode_run_time || [])[0] || (d.last_episode_to_air || {}).runtime || 0) : (d.runtime || 0);
       res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate");
       return res.status(200).json({
         overview: d.overview || "",
         cast: castFull.slice(0, 5).map(c => c.n),
-        castFull, trailers, director: dir,
-        runtime: d.runtime || 0,
+        castFull, trailers, director: dir, dl: isTV ? "Creator" : "Director",
+        runtime,
         language: (d.original_language || "en").toUpperCase(),
         release,
+        seasons: isTV ? d.number_of_seasons || 0 : 0,
+        episodes: isTV ? d.number_of_episodes || 0 : 0,
         platforms: [...new Set(names)].slice(0, 6)
       });
     } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
@@ -39,7 +52,7 @@ module.exports = async (req, res) => {
 
   if (type === "trailer" && /^\d+$/.test(id)) {
     try {
-      const d = await fetch(u(`/movie/${id}/videos`)).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+      const d = await getJson(u(`/${mt}/${id}/videos`));
       const yt = (d.results || []).filter(v => v.site === "YouTube");
       const rank = x => (x.type === "Trailer" ? 0 : 2) + (x.official ? 0 : 1);
       const keys = yt.sort((a, b) => rank(a) - rank(b)).map(x => x.key).slice(0, 5);
@@ -48,26 +61,35 @@ module.exports = async (req, res) => {
     } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
   }
 
+  const span = (n, f) => Array.from({ length: n }, (_, i) => f((pg - 1) * n + i + 1));
   let urls;
-  if (type === "trending") urls = [1, 2, 3].map(p => u("/trending/movie/week", { page: (pg - 1) * 3 + p }));
-  else if (type === "top") urls = [1, 2, 3].map(p => u("/movie/top_rated", { page: (pg - 1) * 3 + p }));
-  else if (type === "search" && q) urls = [u("/search/movie", { query: String(q).slice(0, 100), page: pg })];
-  else if (type === "similar" && /^\d+$/.test(id)) urls = [u(`/movie/${id}/recommendations`)];
+  const k = kindTV ? "tv" : "movie";
+  if (type === "trending") urls = span(3, p => u(`/trending/${k}/week`, { page: p }));
+  else if (type === "top") urls = span(3, p => u(`/${k}/top_rated`, { page: p }));
+  else if (type === "trendall") urls = span(2, p => u("/trending/all/day", { page: p }));
+  else if (type === "multi" && q) urls = span(2, p => u("/search/multi", { query: String(q).slice(0, 100), page: p }));
+  else if (type === "search" && q) urls = [u(`/search/${k}`, { query: String(q).slice(0, 100), page: pg })];
+  else if (type === "similar" && /^\d+$/.test(id)) urls = [u(`/${mt}/${id}/recommendations`)];
   else if (type === "genre" && /^\d+$/.test(g))
-    urls = [1, 2].map(p => u("/discover/movie", { with_genres: g, sort_by: "popularity.desc", "vote_count.gte": "200", page: (pg - 1) * 2 + p }));
+    urls = span(2, p => u(`/discover/${k}`, { with_genres: g, sort_by: "popularity.desc", "vote_count.gte": kindTV ? "100" : "200", page: p }));
   else return res.status(400).json({ error: "bad request" });
 
+  // which media type are plain (non-"multi") results?
+  const defTV = type === "similar" ? isTV : kindTV;
   try {
     const pages = await Promise.all(
       urls.map(x => fetch(x).then(r => { if (!r.ok) { if (pg > 1) return { results: [] }; throw new Error(r.status); } return r.json(); }))
     );
     const seen = new Set(), results = [];
     pages.forEach(p => (p.results || []).forEach(t => {
-      if (t.poster_path && !seen.has(t.id)) {
-        seen.add(t.id);
-        results.push({ id: t.id, title: t.title, release_date: t.release_date,
-          vote_average: t.vote_average, genre_ids: t.genre_ids, poster_path: t.poster_path });
-      }
+      const mtype = t.media_type || (defTV ? "tv" : "movie");
+      if (mtype !== "movie" && mtype !== "tv") return; // skip people
+      const tv = mtype === "tv";
+      const nid = tv ? -t.id : t.id;
+      if (!t.poster_path || seen.has(nid)) return;
+      seen.add(nid);
+      results.push({ id: nid, title: t.title || t.name, release_date: t.release_date || t.first_air_date,
+        vote_average: t.vote_average, genre_ids: t.genre_ids, poster_path: t.poster_path });
     }));
     res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate");
     res.status(200).json({ results });

@@ -13,12 +13,27 @@ module.exports = async (req, res) => {
 
   if (type === "detail" && /^\d+$/.test(id)) {
     try {
-      const d = await fetch(u(`/movie/${id}`, { append_to_response: "credits,watch/providers" })).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+      const d = await fetch(u(`/movie/${id}`, { append_to_response: "credits,watch/providers,videos" })).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
       const reg = /^[A-Z]{2}$/.test(req.query.region) ? req.query.region : "US";
       const wp = ((d["watch/providers"] || {}).results || {})[reg] || {};
       const names = [...(wp.flatrate || []), ...(wp.rent || []), ...(wp.buy || [])].map(p => p.provider_name);
+      const cr = d.credits || {};
+      const castFull = (cr.cast || []).slice(0, 12).map(c => ({ n: c.name, c: c.character || "", p: c.profile_path ? "https://image.tmdb.org/t/p/w185" + c.profile_path : "" }));
+      const dir = (cr.crew || []).filter(c => c.job === "Director").map(c => c.name).slice(0, 2).join(", ");
+      const rank = x => (x.type === "Trailer" ? 0 : 2) + (x.official ? 0 : 1);
+      const trailers = ((d.videos || {}).results || []).filter(v => v.site === "YouTube")
+        .sort((a, b) => rank(a) - rank(b)).slice(0, 6).map(v => ({ k: v.key, n: v.name, t: v.type }));
+      const release = d.release_date ? new Date(d.release_date + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }) : "";
       res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate");
-      return res.status(200).json({ overview: d.overview || "", cast: ((d.credits || {}).cast || []).slice(0, 5).map(c => c.name), platforms: [...new Set(names)].slice(0, 6) });
+      return res.status(200).json({
+        overview: d.overview || "",
+        cast: castFull.slice(0, 5).map(c => c.n),
+        castFull, trailers, director: dir,
+        runtime: d.runtime || 0,
+        language: (d.original_language || "en").toUpperCase(),
+        release,
+        platforms: [...new Set(names)].slice(0, 6)
+      });
     } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
   }
 
@@ -35,6 +50,7 @@ module.exports = async (req, res) => {
 
   let urls;
   if (type === "trending") urls = [1, 2, 3].map(p => u("/trending/movie/week", { page: (pg - 1) * 3 + p }));
+  else if (type === "top") urls = [1, 2, 3].map(p => u("/movie/top_rated", { page: (pg - 1) * 3 + p }));
   else if (type === "search" && q) urls = [u("/search/movie", { query: String(q).slice(0, 100), page: pg })];
   else if (type === "similar" && /^\d+$/.test(id)) urls = [u(`/movie/${id}/recommendations`)];
   else if (type === "genre" && /^\d+$/.test(g))

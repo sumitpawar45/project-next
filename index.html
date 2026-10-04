@@ -406,6 +406,15 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 #sreg{border:1.5px solid var(--sk);border-radius:999px;background:var(--panel);color:var(--fg);padding:8px 12px;font-family:inherit}
 .dr{display:flex;flex-wrap:wrap;gap:8px}.dg{border:1.5px solid var(--sk);border-radius:999px;background:var(--panel);color:var(--fg);padding:8px 14px;cursor:pointer;font-weight:600;font-family:inherit}.dg:hover{background:var(--accent);color:var(--oa)}
 .pel{align-self:center;color:var(--muted);padding:0 2px}.lm{background:var(--accent)!important;color:var(--oa)!important}
+
+/* ===== local player ===== */
+.lct{font-weight:700;font-size:18px;margin:2px 40px 12px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#lcvid{width:100%;max-height:62vh;background:#000;border-radius:16px;display:block;border:1.5px solid var(--sk)}
+.lcb{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-top:14px}
+.fl{display:inline-flex;align-items:center}.lcb .seg{min-width:200px}.sel{border:1.5px solid var(--sk);border-radius:999px;background:var(--panel);color:var(--fg);padding:9px 12px;font-family:inherit}
+.lch{color:var(--muted);font-size:12px;text-align:center;margin:10px 0 0}
+.lpb{position:absolute;left:12px;bottom:10px;z-index:4;font-size:12px;font-weight:600;color:#fff;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.4);padding:6px 12px;border-radius:999px;cursor:pointer}.lpb:hover{background:var(--accent);color:var(--oa)}
+.lcs{position:relative}.lce{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);cursor:pointer;white-space:nowrap}.lcs.has .lce{display:none}
 </style>
 </head>
 <body>
@@ -455,6 +464,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 <div class="pbm"><div class="prow"><span id="pa">0:00</span><div class="pbar" id="pbar"><div class="pf2" id="pf2"></div><i id="pth"></i></div><span id="pz"></span></div>
 <div class="pctl"><button id="pbk" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M11 5v14l-9-7zM22 5v14l-9-7z"/></svg></button><button class="pp" id="pp" aria-label="Play or pause"><svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button><button id="pfw" aria-label="Forward"><svg viewBox="0 0 24 24"><path d="M13 5v14l9-7zM2 5v14l9-7z"/></svg></button><button id="pv" aria-label="Mute"><svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 4V5L7 9zM15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><button class="r" id="pfs" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 00-2 2v3M21 8V5a2 2 0 00-2-2h-3M3 16v3a2 2 0 002 2h3M16 21h3a2 2 0 002-2v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div></div></div></div>
 <div class="ov" id="lv"><div class="sheet wide"><button class="x" id="lx" aria-label="Close">×</button><div class="lbody"><div class="wlh"><div><h2 class="tg" id="lt2"></h2><p class="gd" id="ld2"></p></div><div class="wla"><button class="hcl" id="hcl">Clear</button><button id="lp" aria-label="Previous">&#8249;</button><button id="ln2" aria-label="Next">&#8250;</button></div></div><div class="wlt" id="lt"></div><div class="wld" id="ld"></div></div></div></div>
+<div class="ov" id="lcv" style="z-index:150"><div class="sheet wide"><button class="x" id="lcx" aria-label="Close">×</button><div class="lbody"><div class="lct" id="lct">Local video</div><div class="lcs" id="lcs"><video id="lcvid" controls playsinline></video><label class="lce dg" for="lcin">▶ Choose a video from your computer</label></div><div class="lcb"><label class="dg fl">Choose video<input type="file" id="lcin" accept="video/*" hidden></label><button class="dg" id="lctr">Watch trailer</button><label class="dg fl">Add subtitles<input type="file" id="lcsub" accept=".vtt,.srt" hidden></label><div class="seg" id="lcsp"><button data-s="1" class="on">1x</button><button data-s="1.25">1.25x</button><button data-s="1.5">1.5x</button><button data-s="2">2x</button></div><select id="lcvol" class="sel"><option value="1">Volume 100%</option><option value="0.7">Volume 70%</option><option value="0.5">Volume 50%</option><option value="0.3">Volume 30%</option></select></div><p class="lch">Plays video files from your own computer. Nothing is uploaded. Drag a file here or use Choose video.</p></div></div></div>
 <div class="ov" id="sv"><div class="sheet"><button class="x" id="sx" aria-label="Close">×</button><div class="mb" id="sb" style="padding-top:26px"></div></div></div>
 <div class="ov" id="fv"><div class="sheet"><button class="x" id="fx" aria-label="Close">×</button><div class="mb" style="padding-top:26px"><h3 style="margin:0 0 4px">Frequently asked questions</h3><small style="color:var(--muted);display:block;margin-bottom:10px">Everything you need to know about WatchNext.</small><div id="pfaq"></div></div></div></div>
 <div class="ov" id="prv" style="z-index:130"><div class="sheet wide"><button class="x" id="pvx" aria-label="Close">×</button><div id="pvb"></div></div></div>
@@ -651,6 +661,19 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   function sig(){var q=st.q.trim();return q.length>1?"s:"+q.toLowerCase():(st.g!="All"&&GID[st.g]?"g:"+st.g:"t")}
   function loadMore(btn){if(!LIVE)return;var q=st.q.trim(),s=sig(),qs=s[0]=="s"?"type=search&q="+encodeURIComponent(q):s[0]=="g"?"type=genre&g="+GID[st.g]:"type=trending",p=(NP[s]||1)+1;btn.disabled=true;btn.textContent="Loading\u2026";
     api(qs+"&page="+p).then(function(d){var n0=M.length;add(d.results);NP[s]=p;if(s[0]=="s"){var k=q.toLowerCase();RS[k]=(RS[k]||[]).concat(d.results.map(function(t){return t.id}))}if(!d.results.length||M.length==n0)END[s]=true;render()}).catch(function(){btn.disabled=false;btn.textContent="Load more movies";toast("Could not load more movies")})}
+  /* Local player adapted from "Netflix Style Local Video Player" by Vishal Kumar Basson (GPL-3.0) */
+  var LV=null;
+  function lcLoad(f){if(!f)return;var v=$("lcvid");if(LV)URL.revokeObjectURL(LV);LV=URL.createObjectURL(f);v.src=LV;$("lcs").classList.add("has");$("lct").textContent=f.name.replace(/\.[^.]+$/,"");v.playbackRate=+document.querySelector("#lcsp .on").dataset.s;v.play().catch(function(){})}
+  function lcSub(f){if(!f)return;var rd=new FileReader();rd.onload=function(){var t=String(rd.result).replace(/\r/g,"");if(/\.srt$/i.test(f.name))t="WEBVTT\n\n"+t.replace(/(\d+:\d+:\d+),(\d+)/g,"$1.$2");var v=$("lcvid");Array.prototype.forEach.call(v.querySelectorAll("track"),function(x){x.remove()});var k=document.createElement("track");k.kind="subtitles";k.label="Subtitles";k.srclang="en";k.default=true;k.src=URL.createObjectURL(new Blob([t],{type:"text/vtt"}));v.appendChild(k);setTimeout(function(){if(v.textTracks[0])v.textTracks[0].mode="showing"},50);toast("Subtitles added")};rd.readAsText(f)}
+  function openLocal(m){closeP();$("lct").textContent=m?m[0]+" \u00B7 your file":"Local video";$("lcv").classList.add("open")}
+  function closeLocal(){var v=$("lcvid");v.pause();$("lcv").classList.remove("open")}
+  $("lcin").onchange=function(){lcLoad(this.files[0]);this.value=""};$("lcsub").onchange=function(){lcSub(this.files[0]);this.value=""};
+  $("lcvid").onerror=function(){if(this.getAttribute("src"))toast("This file format is not supported by your browser. Try MP4 (H.264) or WebM.")};
+  $("lcsp").onclick=function(e){var s=e.target.dataset&&e.target.dataset.s;if(!s)return;Array.prototype.forEach.call(this.children,function(b){b.classList.toggle("on",b===e.target)});$("lcvid").playbackRate=+s};
+  $("lcvol").onchange=function(){$("lcvid").volume=+this.value};
+  $("lctr").onclick=function(){closeLocal();openP(cur)};$("lcx").onclick=closeLocal;$("lcv").onclick=function(e){if(e.target==this)closeLocal()};document.addEventListener("keydown",function(e){if(e.key=="Escape"&&$("lcv").classList.contains("open"))closeLocal()});
+  $("lcv").addEventListener("dragover",function(e){e.preventDefault()});$("lcv").addEventListener("drop",function(e){e.preventDefault();var f=e.dataTransfer.files[0];if(!f)return;if(/\.(vtt|srt)$/i.test(f.name))lcSub(f);else lcLoad(f)});
+  var lpb=document.createElement("button");lpb.className="lpb";lpb.textContent="\u25B6 Play my own file";lpb.onclick=function(){openLocal(cur)};$("pwr").appendChild(lpb);
   function info(m){var d=DET[m[6]]||{},el=$("inf");
     var ov=d.overview||"A "+m[2][0].toLowerCase()+(m[2][1]?" with a touch of "+m[2][1].toLowerCase():"")+" that keeps you hooked from the first scene to the last.";
     var ac=d.cast&&d.cast.length?d.cast:pick(ACT,"a",4,m[0]),pl=d.platforms&&d.platforms.length?d.platforms:pick(PLT,"p",3,m[0]);
@@ -735,7 +758,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
     function fail(e){if(e&&e.name=="AbortError")return;dS=-1;prog(0);drawQ();drawTL();b.textContent="Start download";$("dsub").textContent="Download failed. Check your connection and try again."}
   };
   $("dx").onclick=closeD;$("dv").onclick=function(e){if(e.target==this)closeD()};
-  $("bw").onclick=function(){openP(cur)};$("bd").onclick=function(){openD(cur)};
+  $("bw").onclick=function(){markW(cur);openLocal(cur)};$("bd").onclick=function(){openD(cur)};
   document.addEventListener("keydown",function(e){if(e.key=="Escape"){closeP();closeD()}});
   var LOGOS=[["Lumen Pictures","#668CFF","#003199"],["Northstar Films","#FFE766","#B38F00"],["Orbit Studios","#6690F0","#193B99"],["Paperkite","#C4C2FF","#5B4DCC"],["Ember Works","#FF66A1","#B3005A"],["Blue Harbor","#67F0D1","#1B8F72"],["Redwood Media","#D9FF5A","#7A9900"],["Skyline Cinema","#8AA7FF","#3A5ACC"]];
   (function(){var h="";for(var k=0;k<2;k++)LOGOS.forEach(function(l){h+='<div class="lg"><i style="background:linear-gradient(135deg,'+l[1]+','+l[2]+')">'+l[0][0]+'</i><b>'+l[0]+'</b></div>'});$("mt").innerHTML=h})();

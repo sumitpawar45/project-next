@@ -426,8 +426,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
     <button class="it" style="animation-delay:.1s">My watchlist</button>
     <button class="it" style="animation-delay:.15s">Watch history</button>
     <button class="it" style="animation-delay:.2s">Settings</button>
-    <button class="it out" style="animation-delay:.28s">Sign out</button>
-  </div></div></div></nav>
+    </div></div></div></nav>
 
 <section class="hero" id="hero">
   <style id="kf"></style>
@@ -450,7 +449,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 
 <section class="thx" id="thx"><h2 class="tg">Thank you for watching</h2><p>WatchNext exists because of the studios, creators and film lovers who keep great stories coming. Here are some of the teams behind the screen.</p><div class="mq"><div class="mt" id="mt"></div></div><small>© WatchNext. Made for movie nights.</small></section>
 <p class="tmdb">This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
-<div class="wel" id="wel"></div>
+
 <div class="ov" id="ov"><div class="sheet" role="dialog" aria-modal="true">
 <button class="x" id="mx" aria-label="Close">×</button><div class="mh" id="mh"></div>
 <div class="tabs" id="tabs"><button class="on" data-t="o">Overview</button><button data-t="r">Rating</button><button data-t="c">Comments</button><span class="ul" id="ul"></span></div>
@@ -700,7 +699,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
     this.querySelectorAll("button").forEach(function(b){b.className=b.dataset.t==t?"on":""});$("th").style.transform="translateX("+THS.indexOf(t)*32+"px)"};
   $("th").style.transform="translateX(64px)";
   var PK=[];
-  function wel(){var W=$("wel");try{if(sessionStorage.getItem("mg")){W.remove();return}}catch(e){}document.body.style.overflow="hidden";document.body.classList.add("pre");w1()}
+  function wel(){var W=$("wel");if(W)W.remove();document.body.classList.remove("pre");document.body.style.overflow=""}
   function dots(n){return '<div class="dots"><i class="'+(n==1?"on":"")+'"></i><i class="'+(n==2?"on":"")+'"></i></div>'}
   function w1(){$("wel").innerHTML='<div class="wbox"><div class="brand">Watch<span>Next</span></div><h2>Welcome to WatchNext</h2><p>Your personal movie guide. Search a title, tap a movie to like it, comment, watch or download, and get picks you will actually enjoy.</p><button class="go" id="w1">Let\u2019s Go</button></div>';$("w1").onclick=login}
   function w2(){$("wel").innerHTML='<div class="wbox"><h2>What do you like to watch?</h2><p>Pick a few genres and we\u2019ll start there. You can change this anytime.</p><div class="wch" id="wc"></div><button class="go" id="w2">Enter WatchNext</button>'+dots(2)+'</div>';
@@ -763,7 +762,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
   var LOGOS=[["Lumen Pictures","#668CFF","#003199"],["Northstar Films","#FFE766","#B38F00"],["Orbit Studios","#6690F0","#193B99"],["Paperkite","#C4C2FF","#5B4DCC"],["Ember Works","#FF66A1","#B3005A"],["Blue Harbor","#67F0D1","#1B8F72"],["Redwood Media","#D9FF5A","#7A9900"],["Skyline Cinema","#8AA7FF","#3A5ACC"]];
   (function(){var h="";for(var k=0;k<2;k++)LOGOS.forEach(function(l){h+='<div class="lg"><i style="background:linear-gradient(135deg,'+l[1]+','+l[2]+')">'+l[0][0]+'</i><b>'+l[0]+'</b></div>'});$("mt").innerHTML=h})();
   function setUser(n,e){var ini=n.split(/\s+/).map(function(x){return x[0]}).join("").slice(0,2).toUpperCase();$("avb").textContent=ini;document.querySelector(".ph .av").textContent=ini;document.querySelector(".ph b").textContent=n;document.querySelector(".ph small").textContent=e}
-  document.querySelector(".it.out").onclick=function(){try{sessionStorage.removeItem("mg")}catch(x){}location.reload()};
+  
   function login(){$("wel").innerHTML='<div class="lc"><div class="brand" style="font-size:20px">WatchNext</div><h2>Welcome back</h2><div class="sub">Sign in to save your ratings and picks.</div><label for="le">Email</label><input id="le" type="email" placeholder="you@example.com" autocomplete="email"><label for="lp">Password</label><div class="pwd"><input id="lp" type="password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" autocomplete="current-password"><button id="lt" type="button">Show</button></div><div class="row"><label style="margin:0;display:flex;gap:6px;align-items:center"><input type="checkbox" checked> Remember me</label><span>Forgot password?</span></div><button class="go" id="ls">Sign in</button><div class="err" id="lerr"></div><div class="or">or continue with</div><div class="soc"><button id="lg">Google</button><button id="la">Apple</button></div><button class="skip" id="lgu">Continue as guest</button></div>';
     function fin(n,e,b){if(b){b.innerHTML='<span class="sp"></span>';}setTimeout(function(){setUser(n,e);enter()},800)}
     function sub(){var e=$("le").value.trim(),p=$("lp").value;if(!/^\S+@\S+\.\S+$/.test(e)){$("lerr").textContent="Enter a valid email address.";return}if(p.length<4){$("lerr").textContent="Password must be at least 4 characters.";return}$("lerr").textContent="";var n=e.split("@")[0].replace(/[._-]+/g," ").replace(/\b\w/g,function(c){return c.toUpperCase()});fin(n,e,$("ls"))}

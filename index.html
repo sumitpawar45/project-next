@@ -603,14 +603,18 @@ body.spo #up{display:none!important}
 <div class="ov" id="dv"><div class="sheet"><button class="x" id="dx" aria-label="Close">×</button><div class="mb" style="padding-top:26px"><h3 id="dt" style="margin:0 0 4px;padding-right:30px"></h3><small id="dsub" style="color:var(--muted)">Choose a quality, then start.</small><div id="um1"></div><div class="chips" id="dq" style="margin:14px 0"></div><ul class="tl" id="tl"></ul><div class="rbar"><div class="tr"><div class="bf" id="dbf" style="width:0;animation:none;transition:width .15s linear"></div></div><span id="dpc" style="width:36px;text-align:right">0%</span></div></div><div class="acts"><button id="dgo">Start download</button></div></div></div>
 <script>
 /* =====================================================================
-   YOUR CLOUDFLARE STREAM VIDEOS  (the only place you need to edit)
-   Format:  "TMDB_ID": "STREAM_VIDEO_ID",
+   YOUR VIDEOS  (the only place you need to edit)
+   Format:  "TMDB_ID": "VALUE",
    TMDB id = number in themoviedb.org/movie/550-...   TV shows use a minus: "-1399"
+   VALUE can be EITHER:
+     - a Cloudflare Stream Video ID   e.g. "5d5bc37ffcf54c9b82e996823bffbb81"
+     - a direct video link (MP4/WebM) e.g. "https://videos.yoursite.com/movie.mp4"  (R2 or any host you own)
+   Only use videos you have the legal right to stream.
    ===================================================================== */
 var STREAM_VIDEOS = {
-  "550":   "REPLACE_WITH_STREAM_VIDEO_ID",
-  "603":   "REPLACE_WITH_STREAM_VIDEO_ID",
-  "-1399": "REPLACE_WITH_STREAM_VIDEO_ID"
+  "550":   "REPLACE_WITH_STREAM_VIDEO_ID_OR_MP4_LINK",
+  "603":   "REPLACE_WITH_STREAM_VIDEO_ID_OR_MP4_LINK",
+  "-1399": "REPLACE_WITH_STREAM_VIDEO_ID_OR_MP4_LINK"
 };
 /* Optional: your Stream customer code (the part after "customer-"). Leave "" to skip. */
 var STREAM_CUSTOMER_CODE = "";
@@ -822,12 +826,14 @@ var STREAM_CUSTOMER_CODE = "";
   var SVT=0;
   function stMsg(t){var g=$("stg");g.innerHTML="";var d=document.createElement("div");d.className="snv";d.textContent=t;g.appendChild(d)}
   function openStream(m){closeP();$("lct").textContent=m?m[0]:"";$("lcv").classList.add("open");
-    var vid=m&&m[6]?STREAM_VIDEOS[String(m[6])]:"";
-    if(!vid||/^REPLACE/i.test(vid)||!/^[A-Za-z0-9_-]{8,64}$/.test(vid)){stMsg("Video not available"+(/[?&]debug\b/.test(location.search)&&m?"\n\nTMDB ID: "+m[6]+"\nAdd this line to STREAM_VIDEOS:\n\""+m[6]+"\": \"YOUR_STREAM_VIDEO_ID\"":""));return}
+    var vid=m&&m[6]?String(STREAM_VIDEOS[String(m[6])]||"").trim():"",g=$("stg"),isUrl=/^https:\/\/[^\s"'<>]+$/i.test(vid),isId=/^[A-Za-z0-9_-]{8,64}$/.test(vid);
+    if(!vid||/^REPLACE/i.test(vid)||(!isUrl&&!isId)){stMsg("Video not available"+(/[?&]debug\b/.test(location.search)&&m?"\n\nTMDB ID: "+m[6]+"\nAdd this line to STREAM_VIDEOS:\n\""+m[6]+"\": \"YOUR_STREAM_VIDEO_ID_OR_MP4_LINK\"":""));return}
+    g.innerHTML="";
+    if(isUrl){var v=document.createElement("video");v.controls=true;v.autoplay=true;v.playsInline=true;v.setAttribute("controlsList","nodownload");v.style.cssText="position:absolute;inset:0;width:100%;height:100%;background:#000";v.onerror=function(){stMsg("Video not available")};v.src=vid;g.appendChild(v);v.play().catch(function(){});markW(m);mvWd(m);return}
     var code=String(STREAM_CUSTOMER_CODE||"").replace(/^customer-/,"").trim();
     var src=(/^[a-z0-9]+$/i.test(code)?"https://customer-"+code+".cloudflarestream.com/"+vid+"/iframe":"https://iframe.videodelivery.net/"+vid)+"?autoplay=true&preload=auto";
-    var g=$("stg");g.innerHTML="";var f=document.createElement("iframe");f.src=src;f.title=m[0];f.allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;g.appendChild(f);markW(m);mvWd(m)}
-  function closeStream(){SVT++;$("stg").innerHTML="";$("lcv").classList.remove("open")}
+    var f=document.createElement("iframe");f.src=src;f.title=m[0];f.allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;g.appendChild(f);markW(m);mvWd(m)}
+  function closeStream(){SVT++;var vv=$("stg").querySelector("video");if(vv)vv.pause();$("stg").innerHTML="";$("lcv").classList.remove("open")}
   $("lctr").onclick=function(){closeStream();openP(cur)};$("lcx").onclick=closeStream;$("lcv").onclick=function(e){if(e.target==this)closeStream()};document.addEventListener("keydown",function(e){if(e.key=="Escape"&&$("lcv").classList.contains("open"))closeStream()});
   function inResults(){return st.q.trim().length>0||st.g!="All"||!!st.all}
   function resHead(){$("rsh").hidden=false;var q=st.q.trim();$("rst").textContent=q?"Results for \u201C"+q+"\u201D":(st.g!="All"?st.g+(st.kind=="tv"?" TV Shows":" Movies"):(st.kind=="tv"?"All TV Shows":"All Movies"));setDock()}

@@ -613,9 +613,10 @@ body.spo #up{display:none!important}
      "VIDEO_ID"                     Cloudflare Stream Video ID (plain, no prefix)
    Only use videos you have the legal right to stream.
    ===================================================================== */
-
 var STREAM_VIDEOS = {
-  "1269325": "https://archive.org/embed/drishyam-the.-conclusion.-2026"
+  "1269325": "https://archive.org/embed/drishyam-the.-conclusion.-2026",
+  "603":   "REPLACE_ME",
+  "-1399": "REPLACE_ME"
 };
 /* Optional: your Stream customer code (the part after "customer-"). Leave "" to skip. */
 var STREAM_CUSTOMER_CODE = "";
@@ -827,10 +828,12 @@ var STREAM_CUSTOMER_CODE = "";
   var SVT=0;
   function stMsg(t){var g=$("stg");g.innerHTML="";var d=document.createElement("div");d.className="snv";d.textContent=t;g.appendChild(d)}
   function openStream(m){closeP();$("lct").textContent=m?m[0]:"";$("lcv").classList.add("open");
-    var vid=m&&m[6]?String(STREAM_VIDEOS[String(m[6])]||"").trim():"",g=$("stg"),src="",mp4="",yt,bn;
+    var vid=m&&m[6]?String(STREAM_VIDEOS[String(m[6])]||"").trim():"",g=$("stg"),src="",mp4="",yt,bn,ia;
     var ALW="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen";
     if(/^REPLACE/i.test(vid))vid="";
     if((yt=/^youtube:([A-Za-z0-9_-]{11})$/.exec(vid)))src="https://www.youtube-nocookie.com/embed/"+yt[1]+"?autoplay=1&rel=0&playsinline=1";
+    else if((ia=/^archive:([A-Za-z0-9._-]+)$/.exec(vid)))src="https://archive.org/embed/"+ia[1];
+    else if(/^https:\/\/archive\.org\/embed\/[^\s"'<>]+$/i.test(vid))src=vid;
     else if((bn=/^bunny:(\d{1,10})\/([A-Za-z0-9-]{8,64})$/.exec(vid)))src="https://iframe.mediadelivery.net/embed/"+bn[1]+"/"+bn[2]+"?autoplay=true&preload=true";
     else if(/^https:\/\/[^\s"'<>]+$/i.test(vid))mp4=vid;
     else if(/^[A-Za-z0-9_-]{8,64}$/.test(vid)){var code=String(STREAM_CUSTOMER_CODE||"").replace(/^customer-/,"").trim();

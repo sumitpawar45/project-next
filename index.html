@@ -606,15 +606,17 @@ body.spo #up{display:none!important}
    YOUR VIDEOS  (the only place you need to edit)
    Format:  "TMDB_ID": "VALUE",
    TMDB id = number in themoviedb.org/movie/550-...   TV shows use a minus: "-1399"
-   VALUE can be EITHER:
-     - a Cloudflare Stream Video ID   e.g. "5d5bc37ffcf54c9b82e996823bffbb81"
-     - a direct video link (MP4/WebM) e.g. "https://videos.yoursite.com/movie.mp4"  (R2 or any host you own)
+   VALUE can be any ONE of these:
+     "youtube:VIDEO_ID"             YouTube (set the video to Unlisted)   e.g. "youtube:dQw4w9WgXcQ"
+     "bunny:LIBRARY_ID/VIDEO_ID"    Bunny Stream                          e.g. "bunny:12345/abcd-ef01-..."
+     "https://....mp4"              a direct video link you host (R2, your server, etc.)
+     "VIDEO_ID"                     Cloudflare Stream Video ID (plain, no prefix)
    Only use videos you have the legal right to stream.
    ===================================================================== */
 var STREAM_VIDEOS = {
-  "550":   "REPLACE_WITH_STREAM_VIDEO_ID_OR_MP4_LINK",
-  "603":   "REPLACE_WITH_STREAM_VIDEO_ID_OR_MP4_LINK",
-  "-1399": "REPLACE_WITH_STREAM_VIDEO_ID_OR_MP4_LINK"
+  "550":   "REPLACE_ME",
+  "603":   "REPLACE_ME",
+  "-1399": "REPLACE_ME"
 };
 /* Optional: your Stream customer code (the part after "customer-"). Leave "" to skip. */
 var STREAM_CUSTOMER_CODE = "";
@@ -826,13 +828,19 @@ var STREAM_CUSTOMER_CODE = "";
   var SVT=0;
   function stMsg(t){var g=$("stg");g.innerHTML="";var d=document.createElement("div");d.className="snv";d.textContent=t;g.appendChild(d)}
   function openStream(m){closeP();$("lct").textContent=m?m[0]:"";$("lcv").classList.add("open");
-    var vid=m&&m[6]?String(STREAM_VIDEOS[String(m[6])]||"").trim():"",g=$("stg"),isUrl=/^https:\/\/[^\s"'<>]+$/i.test(vid),isId=/^[A-Za-z0-9_-]{8,64}$/.test(vid);
-    if(!vid||/^REPLACE/i.test(vid)||(!isUrl&&!isId)){stMsg("Video not available"+(/[?&]debug\b/.test(location.search)&&m?"\n\nTMDB ID: "+m[6]+"\nAdd this line to STREAM_VIDEOS:\n\""+m[6]+"\": \"YOUR_STREAM_VIDEO_ID_OR_MP4_LINK\"":""));return}
+    var vid=m&&m[6]?String(STREAM_VIDEOS[String(m[6])]||"").trim():"",g=$("stg"),src="",mp4="",yt,bn;
+    var ALW="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen";
+    if(/^REPLACE/i.test(vid))vid="";
+    if((yt=/^youtube:([A-Za-z0-9_-]{11})$/.exec(vid)))src="https://www.youtube-nocookie.com/embed/"+yt[1]+"?autoplay=1&rel=0&playsinline=1";
+    else if((bn=/^bunny:(\d{1,10})\/([A-Za-z0-9-]{8,64})$/.exec(vid)))src="https://iframe.mediadelivery.net/embed/"+bn[1]+"/"+bn[2]+"?autoplay=true&preload=true";
+    else if(/^https:\/\/[^\s"'<>]+$/i.test(vid))mp4=vid;
+    else if(/^[A-Za-z0-9_-]{8,64}$/.test(vid)){var code=String(STREAM_CUSTOMER_CODE||"").replace(/^customer-/,"").trim();
+      src=(/^[a-z0-9]+$/i.test(code)?"https://customer-"+code+".cloudflarestream.com/"+vid+"/iframe":"https://iframe.videodelivery.net/"+vid)+"?autoplay=true&preload=auto"}
+    if(!src&&!mp4){stMsg("Video not available"+(/[?&]debug\b/.test(location.search)&&m?"\n\nTMDB ID: "+m[6]+"\nAdd this line to STREAM_VIDEOS:\n\""+m[6]+"\": \"youtube:VIDEO_ID\"":""));return}
     g.innerHTML="";
-    if(isUrl){var v=document.createElement("video");v.controls=true;v.autoplay=true;v.playsInline=true;v.setAttribute("controlsList","nodownload");v.style.cssText="position:absolute;inset:0;width:100%;height:100%;background:#000";v.onerror=function(){stMsg("Video not available")};v.src=vid;g.appendChild(v);v.play().catch(function(){});markW(m);mvWd(m);return}
-    var code=String(STREAM_CUSTOMER_CODE||"").replace(/^customer-/,"").trim();
-    var src=(/^[a-z0-9]+$/i.test(code)?"https://customer-"+code+".cloudflarestream.com/"+vid+"/iframe":"https://iframe.videodelivery.net/"+vid)+"?autoplay=true&preload=auto";
-    var f=document.createElement("iframe");f.src=src;f.title=m[0];f.allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;g.appendChild(f);markW(m);mvWd(m)}
+    if(mp4){var v=document.createElement("video");v.controls=true;v.autoplay=true;v.playsInline=true;v.setAttribute("controlsList","nodownload");v.style.cssText="position:absolute;inset:0;width:100%;height:100%;background:#000";v.onerror=function(){stMsg("Video not available")};v.src=mp4;g.appendChild(v);v.play().catch(function(){})}
+    else{var f=document.createElement("iframe");f.src=src;f.title=m[0];f.allow=ALW;f.allowFullscreen=true;g.appendChild(f)}
+    markW(m);mvWd(m)}
   function closeStream(){SVT++;var vv=$("stg").querySelector("video");if(vv)vv.pause();$("stg").innerHTML="";$("lcv").classList.remove("open")}
   $("lctr").onclick=function(){closeStream();openP(cur)};$("lcx").onclick=closeStream;$("lcv").onclick=function(e){if(e.target==this)closeStream()};document.addEventListener("keydown",function(e){if(e.key=="Escape"&&$("lcv").classList.contains("open"))closeStream()});
   function inResults(){return st.q.trim().length>0||st.g!="All"||!!st.all}

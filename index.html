@@ -409,7 +409,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 .lct{font-weight:700;font-size:18px;margin:2px 40px 12px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #stg{position:relative;width:100%;aspect-ratio:16/9;max-height:70vh;background:#000;border-radius:16px;overflow:hidden;border:1.5px solid var(--sk)}
 #stg iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-#stg .snv{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:#fff;font-weight:600;font-size:17px}
+#stg .snv{white-space:pre-line;position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:#fff;font-weight:600;font-size:17px}
 .lcb{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-top:14px}
 
 /* ===== rows + dock ===== */
@@ -823,7 +823,7 @@ var STREAM_CUSTOMER_CODE = "";
   function stMsg(t){var g=$("stg");g.innerHTML="";var d=document.createElement("div");d.className="snv";d.textContent=t;g.appendChild(d)}
   function openStream(m){closeP();$("lct").textContent=m?m[0]:"";$("lcv").classList.add("open");
     var vid=m&&m[6]?STREAM_VIDEOS[String(m[6])]:"";
-    if(!vid||/^REPLACE/i.test(vid)||!/^[A-Za-z0-9_-]{8,64}$/.test(vid)){stMsg("Video not available");return}
+    if(!vid||/^REPLACE/i.test(vid)||!/^[A-Za-z0-9_-]{8,64}$/.test(vid)){stMsg("Video not available"+(/[?&]debug\b/.test(location.search)&&m?"\n\nTMDB ID: "+m[6]+"\nAdd this line to STREAM_VIDEOS:\n\""+m[6]+"\": \"YOUR_STREAM_VIDEO_ID\"":""));return}
     var code=String(STREAM_CUSTOMER_CODE||"").replace(/^customer-/,"").trim();
     var src=(/^[a-z0-9]+$/i.test(code)?"https://customer-"+code+".cloudflarestream.com/"+vid+"/iframe":"https://iframe.videodelivery.net/"+vid)+"?autoplay=true&preload=auto";
     var g=$("stg");g.innerHTML="";var f=document.createElement("iframe");f.src=src;f.title=m[0];f.allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen";f.allowFullscreen=true;g.appendChild(f);markW(m);mvWd(m)}

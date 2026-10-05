@@ -378,6 +378,7 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 .wc,.wp,.wi{display:none}
 .gd{margin:4px 0 0;color:var(--muted);font-size:14px;max-width:520px}.gd b{color:var(--accent)}
 .wla{align-items:center}.hcl{height:40px;padding:0 16px;border-radius:999px;border:1.5px solid var(--sk);background:var(--panel);color:var(--fg);font-weight:600;cursor:pointer}
+.wla .hcl{width:auto;min-width:0;height:36px;padding:0 16px;border-radius:999px;font-size:13.5px;font-weight:600;font-family:inherit;white-space:nowrap;flex:none}.wla .hcl:hover{transform:none;background:var(--accent);color:var(--oa)}.wlh{flex-wrap:wrap;gap:12px;padding-right:40px}.wla{flex:none}
 .gc{position:relative;flex:none;width:clamp(260px,78vw,340px);height:420px;border-radius:22px;overflow:hidden;border:1.5px solid var(--sk);cursor:pointer;scroll-snap-align:start;animation:pop .55s cubic-bezier(.3,1.4,.5,1) both}
 @keyframes pop{0%{opacity:0;transform:scale(.7) translateY(34px)}60%{opacity:1;transform:scale(1.05)}100%{opacity:1;transform:none}}
 .gci{position:absolute;inset:0;background-size:cover!important;background-position:center!important}
@@ -504,7 +505,7 @@ body{padding-bottom:110px}
 .kt button.on{color:var(--oa)}
 .kt .kth{position:absolute;top:5px;bottom:5px;left:5px;width:calc(50% - 5px);border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
 .kt[data-k=tv] .kth{transform:translateX(100%)}
-@keyframes rowsin{from{opacity:0;transform:translateY(12px)}}.sw{animation:rowsin .38s ease}
+@keyframes rowsin{from{opacity:0;transform:translateY(12px)}}.rsw{animation:rowsin .38s ease}
 #sp{position:fixed;inset:0;z-index:80;overflow-y:auto;background:var(--bg);opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .3s,transform .4s cubic-bezier(.2,.8,.3,1),visibility 0s .4s}
 #sp.open{opacity:1;visibility:visible;transform:none;transition:opacity .3s,transform .4s cubic-bezier(.2,.8,.3,1),visibility 0s}
 body.spo #up{display:none!important}
@@ -526,6 +527,13 @@ body.spo #up{display:none!important}
 .spb input::placeholder{color:var(--muted)}
 :root[data-theme=light] .spb{background:rgba(255,255,255,.6)}
 @media(prefers-color-scheme:light){:root:not([data-theme=dark]) .spb{background:rgba(255,255,255,.6)}}
+.spbw{position:relative;max-width:760px;margin:0 auto}.spbw .spb{max-width:none;margin:0}
+.spsg{position:absolute;left:0;right:0;top:calc(100% + 10px);z-index:6;background:var(--panel);border:1.5px solid var(--border);border-radius:22px;box-shadow:0 18px 44px rgba(0,0,0,.45);padding:6px;max-height:min(60dvh,420px);overflow-y:auto;text-align:left}
+.spsg[hidden]{display:none}
+.sgi{display:flex;align-items:center;gap:12px;width:100%;padding:8px 10px;border:0;border-radius:16px;background:none;color:var(--fg);font-family:inherit;cursor:pointer;text-align:left}
+.sgi:hover,.sgi.on{background:rgba(var(--ar),.18)}
+.sgp{flex:none;width:40px;height:58px;border-radius:8px;background-size:cover!important;background-position:center!important}
+.sgt{display:flex;flex-direction:column;gap:3px;min-width:0}.sgt b{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sgt small{color:var(--muted);font-size:12.5px}
 .spf{display:flex;gap:8px;justify-content:center;margin-top:18px}
 .spf button{height:38px;padding:0 18px;border-radius:999px;border:1.5px solid var(--border);background:rgba(128,128,128,.12);color:var(--fg);font-weight:600;font-size:14px;font-family:inherit;cursor:pointer;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .spf button.on{background:var(--accent);color:var(--oa);border-color:transparent}
@@ -595,7 +603,7 @@ body.spo #up{display:none!important}
 <div class="ov" id="lv"><div class="sheet wide"><button class="x" id="lx" aria-label="Close">×</button><div class="lbody"><div class="wlh"><div><h2 class="tg" id="lt2"></h2><p class="gd" id="ld2"></p></div><div class="wla"><button class="hcl" id="hcl">Clear</button><button id="lp" aria-label="Previous">&#8249;</button><button id="ln2" aria-label="Next">&#8250;</button></div></div><div class="wlt" id="lt"></div><div class="wld" id="ld"></div></div></div></div>
 <div class="ov" id="lcv" style="z-index:150"><div class="sheet wide"><button class="x" id="lcx" aria-label="Close">×</button><div class="lbody"><div class="lct" id="lct"></div><div id="stg"></div><div class="lcb"><button class="dg" id="lctr">Watch trailer</button></div></div></div></div>
 <div id="mv" aria-label="Movie details"></div>
-<div id="sp" aria-label="Search"><div class="aur" aria-hidden="true"><i></i><i></i><i></i></div><div class="spt"><button class="nbk" id="spback" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg></button><button class="nlg" id="splogo" aria-label="WatchNext home"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 20h34v19a3 3 0 01-3 3H10a3 3 0 01-3-3z" fill="currentColor"/><path d="M5.5 12.5l32-7 1.7 7.6-32 7z" fill="currentColor"/><path d="M14 9.7l4.8 6.2M24 7.6l4.8 6.2M33.6 5.5l1.5 2" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"/><path d="M17 29h14M17 35h9" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"/></svg></button></div><div class="spw"><h1 class="sph1">Find your next favorite story</h1><div class="spb"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="sq" placeholder="Search movies &amp; TV shows..." autocomplete="off" enterkeyhint="search"></div><div class="spf" id="spf"><button data-f="all" class="on">All</button><button data-f="movie">Movies</button><button data-f="tv">TV Shows</button></div><h2 class="sph2" id="sph2">Trending Today</h2><div class="spg" id="spg"></div><div class="sps" id="sps"></div></div></div>
+<div id="sp" aria-label="Search"><div class="aur" aria-hidden="true"><i></i><i></i><i></i></div><div class="spt"><button class="nbk" id="spback" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg></button><button class="nlg" id="splogo" aria-label="WatchNext home"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 20h34v19a3 3 0 01-3 3H10a3 3 0 01-3-3z" fill="currentColor"/><path d="M5.5 12.5l32-7 1.7 7.6-32 7z" fill="currentColor"/><path d="M14 9.7l4.8 6.2M24 7.6l4.8 6.2M33.6 5.5l1.5 2" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"/><path d="M17 29h14M17 35h9" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"/></svg></button></div><div class="spw"><h1 class="sph1">Find your next favorite story</h1><div class="spbw"><div class="spb"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="sq" placeholder="Search movies &amp; TV shows..." autocomplete="off" enterkeyhint="search"></div><div class="spsg" id="spsg" hidden></div></div><div class="spf" id="spf"><button data-f="all" class="on">All</button><button data-f="movie">Movies</button><button data-f="tv">TV Shows</button></div><h2 class="sph2" id="sph2">Trending Today</h2><div class="spg" id="spg"></div><div class="sps" id="sps"></div></div></div>
 <div hidden><input id="q"><button id="go"></button></div>
 <div class="ov" id="sv"><div class="sheet"><button class="x" id="sx" aria-label="Close">×</button><div class="mb" id="sb" style="padding-top:26px"></div></div></div>
 <div class="ov" id="fv"><div class="sheet"><button class="x" id="fx" aria-label="Close">×</button><div class="mb" style="padding-top:26px"><h3 style="margin:0 0 4px">Frequently asked questions</h3><small style="color:var(--muted);display:block;margin-bottom:10px">Everything you need to know about WatchNext.</small><div id="pfaq"></div></div></div></div>
@@ -774,13 +782,13 @@ var STREAM_CUSTOMER_CODE = "";
       t.appendChild(c);var k=document.createElement("i");if(!i)k.className="on";d.appendChild(k)});
     t.onscroll=function(){var w=t.firstChild?t.firstChild.offsetWidth+14:1,i=Math.round(t.scrollLeft/w);Array.prototype.forEach.call(d.children,function(x,j){x.classList.toggle("on",j==i)})}}
   var LIB="wl";
-  function libDraw(){var w=LIB=="wl";$("lt2").textContent=w?"My Watchlist":"Watch History";$("ld2").textContent=(w?"Movies you saved to watch later. ":"Movies you recently opened, newest first. ")+(w?WL:HS).length+" total.";$("hcl").style.display=w?"none":"";
+  function libDraw(){var w=LIB=="wl";$("lt2").textContent=w?"My Watchlist":"Watch History";$("ld2").textContent=(w?"Movies you saved to watch later. ":"Movies you recently opened, newest first. ")+(w?WL:HS).length+" total.";$("hcl").style.display=(w?WL:HS).length?"":"none";$("hcl").textContent=w?"Clear watchlist":"Clear history";
     gDraw($("lt"),$("ld"),w?WL:HS,w?"Your watchlist is empty. Open a movie and tap Watchlist to save it here.":"No history yet. Movies you open will show up here.",w,wlToggle)}
   function wlDraw(){$("wlc").textContent=WL.length;if($("lv").classList.contains("open"))libDraw()}
   function hsDraw(){if($("lv").classList.contains("open"))libDraw()}
   function histAdd(m){HS=HS.filter(function(x){return!wlSame(x,m)});HS.unshift(m.slice());HS=HS.slice(0,20);try{localStorage.setItem("wn_hs",JSON.stringify(HS))}catch(e){}hsDraw()}
   $("bl").onclick=function(){wlToggle(cur)};
-  $("lp").onclick=function(){$("lt").scrollBy({left:-354,behavior:"smooth"})};$("ln2").onclick=function(){$("lt").scrollBy({left:354,behavior:"smooth"})};$("hcl").onclick=function(){HS=[];try{localStorage.setItem("wn_hs","[]")}catch(e){}libDraw();toast("History cleared")};
+  $("lp").onclick=function(){$("lt").scrollBy({left:-354,behavior:"smooth"})};$("ln2").onclick=function(){$("lt").scrollBy({left:354,behavior:"smooth"})};$("hcl").onclick=function(){if(LIB=="wl"){WL=[];wlSave();wlDraw();wlBtn();toast("Watchlist cleared")}else{HS=[];try{localStorage.setItem("wn_hs","[]")}catch(e){}libDraw();toast("History cleared")}};
   $("lx").onclick=function(){$("lv").classList.remove("open")};$("lv").onclick=function(e){if(e.target==this)this.classList.remove("open")};document.addEventListener("keydown",function(e){if(e.key=="Escape")$("lv").classList.remove("open")});
   Array.prototype.forEach.call(document.querySelectorAll("#pop .it"),function(b){var id=/watchlist/i.test(b.textContent)?"wl":/history/i.test(b.textContent)?"hs":"";if(id)b.onclick=function(){LIB=id;$("lv").classList.add("open");libDraw();$("pop").classList.remove("open")}});
   wlDraw();hsDraw();
@@ -879,7 +887,7 @@ var STREAM_CUSTOMER_CODE = "";
   $("dk-set").onclick=function(){drawSet();$("sv").classList.add("open")};
   /* ---------- kind toggle ---------- */
   function syncKind(){$("kt").dataset.k=st.kind;Array.prototype.forEach.call($("kt").querySelectorAll("button"),function(b){b.classList.toggle("on",b.dataset.k==st.kind)})}
-  function setKind(k){if(st.kind==k)return;st.kind=k;syncKind();RWV=-1;st.pg=1;if(inResults()){loadThen()}else{showHome()}var r=$("rows");r.classList.remove("sw");void r.offsetWidth;r.classList.add("sw")}
+  function setKind(k){if(st.kind==k)return;st.kind=k;syncKind();RWV=-1;st.pg=1;if(inResults()){loadThen()}else{showHome()}var r=$("rows");r.classList.remove("rsw");void r.offsetWidth;r.classList.add("rsw")}
   $("kt").onclick=function(e){var k=e.target.dataset&&e.target.dataset.k;if(k)setKind(k)};
   function openKind(k){closeSP();st.kind=k;syncKind();RWV=-1;allView()}
   $("dk-mv").onclick=function(){openKind("movie")};$("dk-tv").onclick=function(){openKind("tv")};
@@ -906,11 +914,34 @@ var STREAM_CUSTOMER_CODE = "";
     if(!SP.io&&window.IntersectionObserver)SP.io=new IntersectionObserver(function(es){if(es[0].isIntersecting)spMore()},{rootMargin:"900px"});
     if(!$("spg").children.length&&!SP.busy){spReset();spMore()}
     setTimeout(function(){if(innerWidth>700)$("sq").focus()},260)}
-  function closeSP(){var e=$("sp");if(!e.classList.contains("open"))return;e.classList.remove("open");document.body.classList.remove("spo");if(!$("mv").classList.contains("open"))document.body.style.overflow="";setDock()}
+  function closeSP(){sgHide();var e=$("sp");if(!e.classList.contains("open"))return;e.classList.remove("open");document.body.classList.remove("spo");if(!$("mv").classList.contains("open"))document.body.style.overflow="";setDock()}
   function qOpen(){openSP()}function qClose(){closeSP()}
   $("spback").onclick=closeSP;$("splogo").onclick=closeSP;
-  $("sq").addEventListener("input",function(){clearTimeout(SP.t);SP.t=setTimeout(function(){SP.q=$("sq").value;spReset();spMore()},350)});
-  $("sq").addEventListener("keydown",function(e){if(e.key=="Enter"){clearTimeout(SP.t);SP.q=this.value;spReset();spMore();this.blur()}});
+  var SG={t:null,tok:0,items:[],i:-1};
+  function sgHide(){var b=$("spsg");b.hidden=true;b.innerHTML="";SG.items=[];SG.i=-1}
+  function sgMark(){Array.prototype.forEach.call($("spsg").children,function(x,j){x.classList.toggle("on",j==SG.i)})}
+  function sgPick(m){clearTimeout(SG.t);SG.tok++;sgHide();$("sq").blur();openM(m)}
+  function sgDraw(list){var b=$("spsg");b.innerHTML="";SG.items=list;SG.i=-1;if(!list.length){b.hidden=true;return}
+    list.forEach(function(m){var r=document.createElement("button");r.type="button";r.className="sgi";
+      var p=document.createElement("span");p.className="sgp";p.style.background=bg(m);
+      var t=document.createElement("span");t.className="sgt";var n=document.createElement("b");n.textContent=m[0];
+      var s=document.createElement("small");s.textContent=(isTV(m)?"TV Show":"Movie")+(m[1]&&m[1]!=="\u2014"?" \u00B7 "+m[1]:"")+(m[3]?"   \u2605 "+m[3]:"");
+      t.appendChild(n);t.appendChild(s);r.appendChild(p);r.appendChild(t);
+      r.onmousedown=function(e){e.preventDefault()};r.onclick=function(){sgPick(m)};b.appendChild(r)});
+    b.hidden=false}
+  function sgFetch(v){var q=v.trim();clearTimeout(SG.t);
+    if(q.length<2){SG.tok++;sgHide();return}
+    SG.t=setTimeout(function(){var tok=++SG.tok;
+      if(!LIVE){var l=q.toLowerCase();sgDraw(M.filter(function(m){return m[0].toLowerCase().indexOf(l)>-1}).sort(function(a,b){return b[3]-a[3]}).slice(0,6));return}
+      api("type=multi&q="+encodeURIComponent(q)+"&page=1").then(function(d){if(tok!=SG.tok)return;sgDraw(add(d.results||[]).slice(0,6))}).catch(function(){if(tok==SG.tok)sgHide()})},220)}
+  $("sq").addEventListener("input",function(){var v=this.value;sgFetch(v);clearTimeout(SP.t);SP.t=setTimeout(function(){SP.q=$("sq").value;spReset();spMore()},350)});
+  $("sq").addEventListener("focus",function(){if(this.value.trim().length>1&&!SG.items.length)sgFetch(this.value)});
+  $("sq").addEventListener("blur",function(){setTimeout(sgHide,200)});
+  $("sq").addEventListener("keydown",function(e){var n=SG.items.length;
+    if(n&&(e.key=="ArrowDown"||e.key=="ArrowUp")){e.preventDefault();SG.i=e.key=="ArrowDown"?(SG.i+1)%n:(SG.i<=0?n-1:SG.i-1);sgMark();return}
+    if(e.key=="Escape"&&n){e.stopPropagation();sgHide();return}
+    if(e.key=="Enter"){if(SG.i>-1&&SG.items[SG.i]){e.preventDefault();sgPick(SG.items[SG.i]);return}
+      clearTimeout(SP.t);clearTimeout(SG.t);SG.tok++;sgHide();SP.q=this.value;spReset();spMore();this.blur()}});
   $("spf").onclick=function(e){var f=e.target.dataset&&e.target.dataset.f;if(!f||f==SP.f)return;SP.f=f;Array.prototype.forEach.call(this.querySelectorAll("button"),function(b){b.classList.toggle("on",b.dataset.f==f)});spRedraw();$("sp").scrollTop=0}
   $("dk-q").onclick=qOpen;document.addEventListener("keydown",function(e){if(e.key=="Escape"&&!$("mv").classList.contains("open")&&!document.querySelector(".ov.open,.pl.open"))qClose()});
   $("up").onclick=function(){window.scrollTo({top:0,behavior:"smooth"})};

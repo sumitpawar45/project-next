@@ -18,9 +18,16 @@ module.exports = async (req, res) => {
   const getJson = url => fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
   const mt = isTV ? "tv" : "movie";
 
+  // Optional OMDb fallback (set OMDB_KEY in Vercel). Fills gaps TMDB leaves: posters, plot, cast, director.
+  const OK = process.env.OMDB_KEY;
+  const omdb = params => !OK ? Promise.resolve(null)
+    : fetch("https://www.omdbapi.com/?" + new URLSearchParams({ apikey: OK, ...params }))
+        .then(r => r.ok ? r.json() : null).then(j => (j && j.Response === "True") ? j : null).catch(() => null);
+  const real = v => (v && v !== "N/A") ? v : "";
+
   if (type === "detail" && /^\d+$/.test(id)) {
     try {
-      const d = await getJson(u(`/${mt}/${id}`, { append_to_response: "credits,watch/providers,videos" }));
+      const d = await getJson(u(`/${mt}/${id}`, { append_to_response: "credits,watch/providers,videos,external_ids" }));
       const reg = /^[A-Z]{2}$/.test(req.query.region) ? req.query.region : "US";
       const wp = ((d["watch/providers"] || {}).results || {})[reg] || {};
       const names = [...(wp.flatrate || []), ...(wp.rent || []), ...(wp.buy || [])].map(p => p.provider_name);
@@ -36,7 +43,7 @@ module.exports = async (req, res) => {
       const release = rd ? new Date(rd + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" }) : "";
       const runtime = isTV ? ((d.episode_run_time || [])[0] || (d.last_episode_to_air || {}).runtime || 0) : (d.runtime || 0);
       res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate");
-      return res.status(200).json({
+      const out = {
         overview: d.overview || "",
         cast: castFull.slice(0, 5).map(c => c.n),
         castFull, trailers, director: dir, dl: isTV ? "Creator" : "Director",
@@ -45,8 +52,22 @@ module.exports = async (req, res) => {
         release,
         seasons: isTV ? d.number_of_seasons || 0 : 0,
         episodes: isTV ? d.number_of_episodes || 0 : 0,
-        platforms: [...new Set(names)].slice(0, 6)
-      });
+        platforms: [...new Set(names)].slice(0, 6),
+        poster: ""
+      };
+      // fall back to OMDb for anything TMDB left empty
+      const imdb = d.imdb_id || (d.external_ids || {}).imdb_id;
+      if (OK && (!out.overview || !out.cast.length || !out.director || !out.runtime || !d.poster_path)) {
+        const o = await omdb(imdb ? { i: imdb } : { t: d.title || d.name || "", y: (rd || "").slice(0, 4) });
+        if (o) {
+          if (!out.overview) out.overview = real(o.Plot);
+          if (!out.cast.length) out.cast = real(o.Actors).split(", ").filter(Boolean).slice(0, 5);
+          if (!out.director) out.director = real(o.Director) || real(o.Writer);
+          if (!out.runtime) out.runtime = parseInt(real(o.Runtime)) || 0;
+          if (!d.poster_path) out.poster = real(o.Poster);
+        }
+      }
+      return res.status(200).json(out);
     } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
   }
 
@@ -86,11 +107,19 @@ module.exports = async (req, res) => {
       if (mtype !== "movie" && mtype !== "tv") return; // skip people
       const tv = mtype === "tv";
       const nid = tv ? -t.id : t.id;
-      if (!t.poster_path || seen.has(nid)) return;
+      if (seen.has(nid) || !(t.title || t.name)) return; // keep poster-less titles too
       seen.add(nid);
       results.push({ id: nid, title: t.title || t.name, release_date: t.release_date || t.first_air_date,
-        vote_average: t.vote_average, genre_ids: t.genre_ids, poster_path: t.poster_path });
+        vote_average: t.vote_average, genre_ids: t.genre_ids, poster_path: t.poster_path || "" });
     }));
+    // OMDb poster fallback for titles TMDB has no poster for (max 10 per request keeps it fast)
+    if (OK) {
+      const miss = results.filter(r => !r.poster_path).slice(0, 10);
+      await Promise.all(miss.map(async r => {
+        const o = await omdb({ t: r.title, y: (r.release_date || "").slice(0, 4) });
+        if (o && real(o.Poster)) r.poster_path = o.Poster;
+      }));
+    }
     res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate");
     res.status(200).json({ results });
   } catch (e) {

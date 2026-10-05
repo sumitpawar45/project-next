@@ -557,6 +557,7 @@ body.spo #up{display:none!important}
     <button class="it" style="animation-delay:.1s">My watchlist</button>
     <button class="it" style="animation-delay:.15s">Watch history</button>
     <button class="it" style="animation-delay:.2s">Settings</button>
+    <button class="it" id="signout" style="animation-delay:.25s">Sign out</button>
     </div></div></div></nav>
 
 <section class="hero" id="hero">
@@ -609,6 +610,23 @@ body.spo #up{display:none!important}
 <div class="ov" id="fv"><div class="sheet"><button class="x" id="fx" aria-label="Close">×</button><div class="mb" style="padding-top:26px"><h3 style="margin:0 0 4px">Frequently asked questions</h3><small style="color:var(--muted);display:block;margin-bottom:10px">Everything you need to know about WatchNext.</small><div id="pfaq"></div></div></div></div>
 <div class="ov" id="prv" style="z-index:130"><div class="sheet wide"><button class="x" id="pvx" aria-label="Close">×</button><div id="pvb"></div></div></div>
 <div class="ov" id="dv"><div class="sheet"><button class="x" id="dx" aria-label="Close">×</button><div class="mb" style="padding-top:26px"><h3 id="dt" style="margin:0 0 4px;padding-right:30px"></h3><small id="dsub" style="color:var(--muted)">Choose a quality, then start.</small><div id="um1"></div><div class="chips" id="dq" style="margin:14px 0"></div><ul class="tl" id="tl"></ul><div class="rbar"><div class="tr"><div class="bf" id="dbf" style="width:0;animation:none;transition:width .15s linear"></div></div><span id="dpc" style="width:36px;text-align:right">0%</span></div></div><div class="acts"><button id="dgo">Start download</button></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* =====================================================================
+   LOGIN + DATABASE (Supabase)
+   Paste your two values from Supabase: Project Settings -> API
+   (the anon key is safe to put here; never paste the service_role key)
+   Leave them as they are and the site keeps its old demo login.
+   ===================================================================== */
+var SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
+var SUPABASE_ANON_KEY = "PASTE_YOUR_ANON_PUBLIC_KEY_HERE";
+var WN_SB = null;
+try {
+  if (window.supabase && /^https:\/\//.test(SUPABASE_URL) && SUPABASE_ANON_KEY.length > 40) {
+    WN_SB = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+} catch (e) { WN_SB = null; }
+</script>
 <script>
 /* =====================================================================
    YOUR VIDEOS  (the only place you need to edit)
@@ -706,7 +724,7 @@ var STREAM_CUSTOMER_CODE = "";
   var GID={};Object.keys(TG).forEach(function(k){GID[TG[k]]=k});
   var COL=[["#4f46e5","#0f172a"],["#f59e0b","#7c2d12"],["#ec4899","#1e1b4b"],["#38bdf8","#1e3a8a"],["#34d399","#0e7490"],["#a78bfa","#312e81"],["#ef4444","#450a0a"],["#94a3b8","#0f172a"]];
   function conv(t){var g=(t.genre_ids||[]).map(function(i){return TG[i]}).filter(Boolean).slice(0,3);if(!g.length)g=["Movie"];var c=COL[Math.abs(t.id)%COL.length];
-    return [t.title,(t.release_date||"").slice(0,4)||"\u2014",g,Math.round((t.vote_average||0)*10)/10,c[0],c[1],t.id,t.poster_path?IMG+t.poster_path:null]}
+    return [t.title,(t.release_date||"").slice(0,4)||"\u2014",g,Math.round((t.vote_average||0)*10)/10,c[0],c[1],t.id,t.poster_path?(/^https?:/.test(t.poster_path)?t.poster_path:IMG+t.poster_path):null]}
   function add(a){return a.map(function(t){for(var i=0;i<M.length;i++)if(M[i][6]===t.id)return M[i];var m=conv(t);M.push(m);return m})}
   function api(qs){return fetch("/api/movies?"+qs).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
   var RS={},PEND=false;
@@ -1085,12 +1103,61 @@ var STREAM_CUSTOMER_CODE = "";
   (function(){var h="";for(var k=0;k<2;k++)LOGOS.forEach(function(l){h+='<div class="lg"><i style="background:linear-gradient(135deg,'+l[1]+','+l[2]+')">'+l[0][0]+'</i><b>'+l[0]+'</b></div>'});$("mt").innerHTML=h})();
   function setUser(n,e){var ini=n.split(/\s+/).map(function(x){return x[0]}).join("").slice(0,2).toUpperCase();$("avb").textContent=ini;document.querySelector(".ph .av").textContent=ini;document.querySelector(".ph b").textContent=n;document.querySelector(".ph small").textContent=e}
   
-  function login(){$("wel").innerHTML='<div class="lc"><div class="brand" style="font-size:20px">WatchNext</div><h2>Welcome back</h2><div class="sub">Sign in to save your ratings and picks.</div><label for="le">Email</label><input id="le" type="email" placeholder="you@example.com" autocomplete="email"><label for="lp">Password</label><div class="pwd"><input id="lp" type="password" placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022" autocomplete="current-password"><button id="lt" type="button">Show</button></div><div class="row"><label style="margin:0;display:flex;gap:6px;align-items:center"><input type="checkbox" checked> Remember me</label><span>Forgot password?</span></div><button class="go" id="ls">Sign in</button><div class="err" id="lerr"></div><div class="or">or continue with</div><div class="soc"><button id="lg">Google</button><button id="la">Apple</button></div><button class="skip" id="lgu">Continue as guest</button></div>';
-    function fin(n,e,b){if(b){b.innerHTML='<span class="sp"></span>';}setTimeout(function(){setUser(n,e);enter()},800)}
-    function sub(){var e=$("le").value.trim(),p=$("lp").value;if(!/^\S+@\S+\.\S+$/.test(e)){$("lerr").textContent="Enter a valid email address.";return}if(p.length<4){$("lerr").textContent="Password must be at least 4 characters.";return}$("lerr").textContent="";var n=e.split("@")[0].replace(/[._-]+/g," ").replace(/\b\w/g,function(c){return c.toUpperCase()});fin(n,e,$("ls"))}
-    $("ls").onclick=sub;$("lp").addEventListener("keydown",function(k){if(k.key=="Enter")sub()});$("le").addEventListener("keydown",function(k){if(k.key=="Enter")sub()});
-    $("lt").onclick=function(){var t=$("lp").type=="password";$("lp").type=t?"text":"password";this.textContent=t?"Hide":"Show"};
-    $("lg").onclick=function(){fin("Testing User","testinguser@watchnext.app",this)};$("la").onclick=function(){fin("Testing User","testinguser@watchnext.app",this)};$("lgu").onclick=function(){fin("Guest","guest@watchnext.app")}}
+  function nameFrom(u){var m=u.user_metadata||{};var n=m.name||m.full_name;if(n)return n;return String(u.email||"User").split("@")[0].replace(/[._-]+/g," ").replace(/\b\w/g,function(c){return c.toUpperCase()})}
+  function afterAuth(u){
+    /* the profile row is created by the database itself when the account is made; here we only stamp the login time */
+    if(WN_SB&&u&&u.id){try{WN_SB.from("profiles").update({last_login_at:new Date().toISOString()}).eq("id",u.id).then(function(){},function(){})}catch(e){}}
+    return nameFrom(u);
+  }
+  function login(mode){
+    var sb=WN_SB,up=mode==="up";
+    $("wel").innerHTML='<div class="lc"><div class="brand" style="font-size:20px">WatchNext</div><h2>'+(up?"Create your account":"Welcome back")+'</h2><div class="sub">'+(up?"Sign up to save your watchlist and ratings.":"Sign in to save your ratings and picks.")+'</div>'+
+      (up?'<label for="wln">Name</label><input id="wln" type="text" placeholder="Your name" autocomplete="name">':'')+
+      '<label for="wle">Email</label><input id="wle" type="email" placeholder="you@example.com" autocomplete="email"><label for="wlp">Password</label><div class="pwd"><input id="wlp" type="password" placeholder="At least 6 characters" autocomplete="'+(up?"new-password":"current-password")+'"><button id="wlt" type="button">Show</button></div>'+
+      (sb?'<div class="row"><span></span><span id="wlsw" style="cursor:pointer;color:var(--accent)">'+(up?"Have an account? Sign in":"New here? Create account")+'</span></div>':'<div class="row"><label style="margin:0;display:flex;gap:6px;align-items:center"><input type="checkbox" checked> Remember me</label><span>Forgot password?</span></div>')+
+      '<button class="go" id="wls">'+(up?"Create account":"Sign in")+'</button><div class="err" id="wlerr"></div>'+
+      (sb?'':'<div class="or">or continue with</div><div class="soc"><button id="wlg">Google</button><button id="wla">Apple</button></div>')+
+      '<button class="skip" id="wlgu">Continue as guest</button></div>';
+    function err(t){$("wlerr").textContent=t||""}
+    function fin(n,e,b){if(b){b.innerHTML='<span class="sp"></span>'}setTimeout(function(){setUser(n,e);enter()},sb?300:800)}
+    function sub(){
+      var e=$("wle").value.trim(),p=$("wlp").value,nm=up?$("wln").value.trim():"";
+      if(!/^\S+@\S+\.\S+$/.test(e)){err("Enter a valid email address.");return}
+      if(p.length<(sb?6:4)){err("Password must be at least "+(sb?6:4)+" characters.");return}
+      err("");
+      var b=$("wls"),label=b.textContent;
+      if(!sb){var dn=e.split("@")[0].replace(/[._-]+/g," ").replace(/\b\w/g,function(c){return c.toUpperCase()});fin(dn,e,b);return}
+      b.disabled=true;b.innerHTML='<span class="sp"></span>';
+      function fail(t){b.disabled=false;b.textContent=label;err(t)}
+      if(up){
+        sb.auth.signUp({email:e,password:p,options:{data:{name:nm||e.split("@")[0]}}}).then(function(r){
+          if(r.error){fail(r.error.message);return}
+          if(r.data&&r.data.session){var n=afterAuth(r.data.session.user);b.disabled=false;fin(n,e,b)}
+          else{b.disabled=false;b.textContent=label;err("Check your email to confirm your account, then sign in.")}
+        },function(){fail("Could not reach the server. Try again.")});
+      }else{
+        sb.auth.signInWithPassword({email:e,password:p}).then(function(r){
+          if(r.error){fail(r.error.message);return}
+          var n=afterAuth(r.data.user);b.disabled=false;fin(n,e,b);
+        },function(){fail("Could not reach the server. Try again.")});
+      }
+    }
+    $("wls").onclick=sub;$("wlp").addEventListener("keydown",function(k){if(k.key=="Enter")sub()});$("wle").addEventListener("keydown",function(k){if(k.key=="Enter")sub()});
+    $("wlt").onclick=function(){var t=$("wlp").type=="password";$("wlp").type=t?"text":"password";this.textContent=t?"Hide":"Show"};
+    if(sb){$("wlsw").onclick=function(){login(up?"in":"up")}}
+    else{$("wlg").onclick=function(){fin("Testing User","testinguser@watchnext.app",this)};$("wla").onclick=function(){fin("Testing User","testinguser@watchnext.app",this)}}
+    $("wlgu").onclick=function(){fin("Guest","guest@watchnext.app")};
+  }
+  function showLogin(){var W=document.createElement("div");W.className="wel";W.id="wel";document.body.appendChild(W);document.body.style.overflow="hidden";login("in")}
+  function authInit(){
+    var so=$("signout");
+    if(so)so.onclick=function(){var go=function(){try{sessionStorage.removeItem("mg")}catch(e){}location.reload()};if(WN_SB)WN_SB.auth.signOut().then(go,go);else go()};
+    if(!WN_SB){wel();return}
+    WN_SB.auth.getSession().then(function(r){
+      var s=r&&r.data&&r.data.session;
+      if(s){setUser(afterAuth(s.user),s.user.email||"");wel()}else showLogin();
+    },function(){showLogin()});
+  }
   function esc(t){return t.replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
   var NV=document.querySelector("nav");function nh(){document.documentElement.style.setProperty("--nh",NV.offsetHeight+"px")}nh();window.addEventListener("resize",nh);var BR=document.querySelector(".bar")||NV,fq=0;function fc(){fq=0;document.querySelectorAll("#grid .card:not(.sk)").forEach(function(c){var r=c.getBoundingClientRect(),f=Math.max(0,Math.min(1,(r.bottom-60)/170));c.style.filter=f<1?"opacity("+f+")":""})}window.addEventListener("scroll",function(){if(!fq)fq=requestAnimationFrame(fc)},{passive:true});var lastY=0;window.addEventListener("scroll",function(){var y=window.scrollY,r=$("chips")||NV;if(y>lastY+6&&y>160){r.classList.add("gone");NV.classList.add("gone");BR.classList.add("gone")}else if(y<lastY-6||y<120){r.classList.remove("gone");NV.classList.remove("gone");BR.classList.remove("gone")}lastY=y;if(sg.classList.contains("open"))sgPlace()},{passive:true});
   $("faqbtn").onclick=function(){$("fv").classList.add("open")};$("fx").onclick=function(){$("fv").classList.remove("open")};$("fv").onclick=function(e){if(e.target==this)this.classList.remove("open")};
@@ -1120,7 +1187,7 @@ var STREAM_CUSTOMER_CODE = "";
   function search(){qClose();st.q=$("q").value;loadThen();$("results").scrollIntoView({behavior:"smooth"})}
   $("navlogo").onclick=function(){if(!$("rsh").hidden)$("rsb").click();else window.scrollTo({top:0,behavior:"smooth"})};$("navback").onclick=$("navlogo").onclick;$("go").onclick=search;$("q").addEventListener("keydown",function(e){if(e.key=="Enter")search()});
   $("q").addEventListener("input",function(){st.q=this.value;loadThen()});
-  hero();buildTog();buildChips();loadThen();loadLive();faq($("pfaq"));wel();
+  hero();buildTog();buildChips();loadThen();loadLive();faq($("pfaq"));authInit();
   window.addEventListener("resize",pill);
 })();
 </script>

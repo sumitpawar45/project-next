@@ -133,14 +133,16 @@ module.exports = async (req, res) => {
     if (type === "similar") results.sort((a, b) => (b.poster_path ? 1 : 0) - (a.poster_path ? 1 : 0));
     // OMDb poster fallback for titles TMDB has no poster for (max 10 per request keeps it fast)
     if (OK) {
-      const miss = results.filter(r => !r.poster_path).slice(0, 10);
+      const miss = results.filter(r => !r.poster_path).slice(0, 20);
       await Promise.all(miss.map(async r => {
         const o = await omdb({ t: r.title, y: (r.release_date || "").slice(0, 4) });
         if (o && real(o.Poster)) r.poster_path = o.Poster;
       }));
     }
+    // browsing rows: hide titles that still have no poster so rows never show empty cards (search keeps them)
+    const out = (type === "search" || type === "multi") ? results : results.filter(r => r.poster_path);
     res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate");
-    res.status(200).json({ results });
+    res.status(200).json({ results: out });
   } catch (e) {
     res.status(502).json({ error: "TMDB request failed", detail: String(e && e.message || e) });
   }

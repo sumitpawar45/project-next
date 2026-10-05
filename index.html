@@ -907,6 +907,7 @@ var STREAM_CUSTOMER_CODE = "";
   function posterFail(el,url){
     var cur=el.style.backgroundImage||"",gm=cur.match(/linear-gradient\(.*\)\s*$/);
     if(gm)el.style.backgroundImage=gm[0];
+    if(el.classList.contains("rcp")&&el.parentNode&&el.parentNode.classList.contains("rc")){el.parentNode.remove();return}
     el.classList.add("nopic");
     if(!el.textContent.trim()){
       var t="";

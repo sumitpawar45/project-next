@@ -90,7 +90,7 @@ module.exports = async (req, res) => {
   else if (type === "trendall") urls = span(2, p => u("/trending/all/day", { page: p }));
   else if (type === "multi" && q) urls = span(2, p => u("/search/multi", { query: String(q).slice(0, 100), page: p }));
   else if (type === "search" && q) urls = [u(`/search/${k}`, { query: String(q).slice(0, 100), page: pg })];
-  else if (type === "similar" && /^\d+$/.test(id)) urls = [u(`/${mt}/${id}/recommendations`)];
+  else if (type === "similar" && /^\d+$/.test(id)) urls = [u(`/${mt}/${id}/recommendations`), u(`/${mt}/${id}/similar`)];
   else if (type === "genre" && /^\d+$/.test(g))
     urls = span(2, p => u(`/discover/${k}`, { with_genres: g, sort_by: "popularity.desc", "vote_count.gte": kindTV ? "100" : "200", page: p }));
   else return res.status(400).json({ error: "bad request" });
@@ -112,6 +112,8 @@ module.exports = async (req, res) => {
       results.push({ id: nid, title: t.title || t.name, release_date: t.release_date || t.first_air_date,
         vote_average: t.vote_average, genre_ids: t.genre_ids, poster_path: t.poster_path || "" });
     }));
+    // recommendations: show titles that have posters first so the row never looks empty
+    if (type === "similar") results.sort((a, b) => (b.poster_path ? 1 : 0) - (a.poster_path ? 1 : 0));
     // OMDb poster fallback for titles TMDB has no poster for (max 10 per request keeps it fast)
     if (OK) {
       const miss = results.filter(r => !r.poster_path).slice(0, 10);

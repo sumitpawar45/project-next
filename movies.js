@@ -4,18 +4,35 @@
 const T = "https://api.themoviedb.org/3";
 
 module.exports = async (req, res) => {
-  const key = process.env.TMDB_KEY;
-  if (!key) return res.status(500).json({ error: "TMDB_KEY is not set" });
-
   const { type, q, g } = req.query;
+
+  // Image proxy: some networks/ISPs block image.tmdb.org, so posters are served from your own domain.
+  if (type === "img") {
+    const ip = String(req.query.p || "");
+    if (!/^\/(w92|w154|w185|w342|w500|w780|original)\/[\w-]+\.(jpg|jpeg|png|webp)$/.test(ip)) return res.status(400).end();
+    try {
+      const r = await fetch("https://image.tmdb.org/t/p" + ip);
+      if (!r.ok) return res.status(404).end();
+      const buf = Buffer.from(await r.arrayBuffer());
+      res.setHeader("Content-Type", r.headers.get("content-type") || "image/jpeg");
+      res.setHeader("Cache-Control", "public, max-age=31536000, s-maxage=31536000, immutable");
+      return res.status(200).send(buf);
+    } catch (e) { return res.status(502).end(); }
+  }
+
+  const key = (process.env.TMDB_KEY || "").trim();
+  if (!key) return res.status(500).json({ error: "TMDB_KEY is not set" });
+  // Works with both the v3 API key and the long v4 "Read Access Token" (starts with eyJ)
+  const bearer = key.startsWith("eyJ");
+  const hdr = bearer ? { headers: { Authorization: "Bearer " + key, accept: "application/json" } } : {};
   const rawId = String(req.query.id || "");
   const isTV = /^-\d+$/.test(rawId);
   const id = isTV ? rawId.slice(1) : rawId;
   const kindTV = req.query.kind === "tv";
   const pg = Math.min(100, Math.max(1, parseInt(req.query.page) || 1));
   const u = (path, params = {}) =>
-    `${T}${path}?` + new URLSearchParams({ api_key: key, language: "en-US", include_adult: "false", ...params });
-  const getJson = url => fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
+    `${T}${path}?` + new URLSearchParams({ ...(bearer ? {} : { api_key: key }), language: "en-US", include_adult: "false", ...params });
+  const getJson = url => fetch(url, hdr).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); });
   const mt = isTV ? "tv" : "movie";
 
   // Optional OMDb fallback (set OMDB_KEY in Vercel). Fills gaps TMDB leaves: posters, plot, cast, director.
@@ -32,7 +49,7 @@ module.exports = async (req, res) => {
       const wp = ((d["watch/providers"] || {}).results || {})[reg] || {};
       const names = [...(wp.flatrate || []), ...(wp.rent || []), ...(wp.buy || [])].map(p => p.provider_name);
       const cr = d.credits || {};
-      const castFull = (cr.cast || []).slice(0, 12).map(c => ({ n: c.name, c: c.character || "", p: c.profile_path ? "https://image.tmdb.org/t/p/w185" + c.profile_path : "" }));
+      const castFull = (cr.cast || []).slice(0, 12).map(c => ({ n: c.name, c: c.character || "", p: c.profile_path ? "/api/movies?type=img&p=/w185" + c.profile_path : "" }));
       const dir = isTV
         ? (d.created_by || []).map(c => c.name).slice(0, 3).join(", ")
         : (cr.crew || []).filter(c => c.job === "Director").map(c => c.name).slice(0, 2).join(", ");
@@ -68,7 +85,7 @@ module.exports = async (req, res) => {
         }
       }
       return res.status(200).json(out);
-    } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
+    } catch (e) { return res.status(502).json({ error: "TMDB request failed", detail: String(e && e.message || e) }); }
   }
 
   if (type === "trailer" && /^\d+$/.test(id)) {
@@ -79,7 +96,7 @@ module.exports = async (req, res) => {
       const keys = yt.sort((a, b) => rank(a) - rank(b)).map(x => x.key).slice(0, 5);
       res.setHeader("Cache-Control", "s-maxage=86400, stale-while-revalidate");
       return res.status(200).json({ key: keys[0] || null, keys });
-    } catch (e) { return res.status(502).json({ error: "TMDB request failed" }); }
+    } catch (e) { return res.status(502).json({ error: "TMDB request failed", detail: String(e && e.message || e) }); }
   }
 
   const span = (n, f) => Array.from({ length: n }, (_, i) => f((pg - 1) * n + i + 1));
@@ -99,7 +116,7 @@ module.exports = async (req, res) => {
   const defTV = type === "similar" ? isTV : kindTV;
   try {
     const pages = await Promise.all(
-      urls.map(x => fetch(x).then(r => { if (!r.ok) { if (pg > 1) return { results: [] }; throw new Error(r.status); } return r.json(); }))
+      urls.map(x => fetch(x, hdr).then(r => { if (!r.ok) { if (pg > 1) return { results: [] }; throw new Error(r.status); } return r.json(); }))
     );
     const seen = new Set(), results = [];
     pages.forEach(p => (p.results || []).forEach(t => {
@@ -125,6 +142,6 @@ module.exports = async (req, res) => {
     res.setHeader("Cache-Control", "s-maxage=3600, stale-while-revalidate");
     res.status(200).json({ results });
   } catch (e) {
-    res.status(502).json({ error: "TMDB request failed" });
+    res.status(502).json({ error: "TMDB request failed", detail: String(e && e.message || e) });
   }
 };

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>(function(){var t;try{t=localStorage.getItem("wn-theme")}catch(e){}if(t!="light"&&t!="dark")t=window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)})()</script>
 <meta name="referrer" content="no-referrer">
 <meta name="theme-color" content="#070914">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -574,7 +575,7 @@ body.spo #up{display:none!important}
 </style>
 </head>
 <body>
-<nav><div style="display:flex;align-items:center;gap:12px"><button class="nbk" id="navback" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg></button><button class="nlg" id="navlogo" aria-label="WatchNext home"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 20h34v19a3 3 0 01-3 3H10a3 3 0 01-3-3z" fill="currentColor"/><path d="M5.5 12.5l32-7 1.7 7.6-32 7z" fill="currentColor"/><path d="M14 9.7l4.8 6.2M24 7.6l4.8 6.2M33.6 5.5l1.5 2" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"/><path d="M17 29h14M17 35h9" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"/></svg></button><button class="faqb" id="faqbtn" aria-label="Frequently asked questions"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 3.5M12 17h.01"/></svg>FAQ</button></div><div style="display:flex;gap:10px;align-items:center"><button class="plb" id="plb" aria-label="Pricing"><svg viewBox="0 0 24 24"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg><span id="plt">Upgrade</span></button><div class="theme" id="theme" role="group" aria-label="Theme"><span class="th" id="th"></span><button data-t="light" aria-label="Light">☀</button><button data-t="dark" aria-label="Dark">☾</button><button data-t="system" class="on" aria-label="System">◐</button></div><div class="pf"><button class="av" id="avb" aria-haspopup="true" aria-expanded="false" aria-label="Open profile">TU</button>
+<nav><div style="display:flex;align-items:center;gap:12px"><button class="nbk" id="navback" aria-label="Back"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 5l-7 7 7 7"/></svg></button><button class="nlg" id="navlogo" aria-label="WatchNext home"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 20h34v19a3 3 0 01-3 3H10a3 3 0 01-3-3z" fill="currentColor"/><path d="M5.5 12.5l32-7 1.7 7.6-32 7z" fill="currentColor"/><path d="M14 9.7l4.8 6.2M24 7.6l4.8 6.2M33.6 5.5l1.5 2" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"/><path d="M17 29h14M17 35h9" stroke="var(--bg)" stroke-width="3" stroke-linecap="round"/></svg></button><button class="faqb" id="faqbtn" aria-label="Frequently asked questions"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 3.5M12 17h.01"/></svg>FAQ</button></div><div style="display:flex;gap:10px;align-items:center"><button class="plb" id="plb" aria-label="Pricing"><svg viewBox="0 0 24 24"><path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/></svg><span id="plt">Upgrade</span></button><div class="theme" id="theme" role="group" aria-label="Theme"><span class="th" id="th"></span><button data-t="light" aria-label="Light mode">☀</button><button data-t="dark" aria-label="Dark mode">☾</button></div><div class="pf"><button class="av" id="avb" aria-haspopup="true" aria-expanded="false" aria-label="Open profile">TU</button>
   <div class="pop" id="pop" role="menu">
     <div class="ph"><div class="av">TU</div><div><b>Testing User</b><small>testinguser@watchnext.app</small></div></div>
     <div class="stats"><div><strong id="wdc">0</strong>Watched</div><div><strong id="wlc">0</strong>Watchlist</div><div><strong>9</strong>Reviews</div></div>
@@ -744,7 +745,7 @@ var STREAM_CUSTOMER_CODE = "";
       .filter(function(a){return a[1]>0}).sort(function(a,b){return b[1]-a[1]||b[0][3]-a[0][3]}).slice(0,12).map(function(a){return a[0]})
   }
   /* ===== LIVE MOVIE DATA (TMDB through /api/movies) ===== */
-  var IMG="https://image.tmdb.org/t/p/w342",LIVE=false,SIM={},SIMP={},RT;
+  var IMG="/api/movies?type=img&p=/w342",LIVE=false,SIM={},SIMP={},RT;
   var TG={28:"Action",12:"Adventure",16:"Animation",35:"Comedy",80:"Crime",99:"Documentary",18:"Drama",10751:"Family",14:"Fantasy",36:"History",27:"Horror",10402:"Music",9648:"Mystery",10749:"Romance",878:"Sci-Fi",53:"Thriller",10752:"War",37:"Western",10759:"Action & Adventure",10762:"Kids",10763:"News",10764:"Reality",10765:"Sci-Fi & Fantasy",10766:"Soap",10767:"Talk",10768:"War & Politics"};
   var GID={};Object.keys(TG).forEach(function(k){GID[TG[k]]=k});
   var COL=[["#4f46e5","#0f172a"],["#f59e0b","#7c2d12"],["#ec4899","#1e1b4b"],["#38bdf8","#1e3a8a"],["#34d399","#0e7490"],["#a78bfa","#312e81"],["#ef4444","#450a0a"],["#94a3b8","#0f172a"]];
@@ -851,11 +852,11 @@ var STREAM_CUSTOMER_CODE = "";
   if(SET.region)RG=SET.region;
   function setSave(){try{localStorage.setItem("wn_set",JSON.stringify(SET))}catch(e){}}
   var REG=[["US","United States"],["IN","India"],["GB","United Kingdom"],["CA","Canada"],["AU","Australia"],["DE","Germany"],["FR","France"],["JP","Japan"]];
-  function drawSet(){var th=document.documentElement.getAttribute("data-theme")||"system",nm=document.querySelector(".ph b").textContent,em=document.querySelector(".ph small").textContent;
+  function drawSet(){var th=document.documentElement.getAttribute("data-theme")||"dark",nm=document.querySelector(".ph b").textContent,em=document.querySelector(".ph small").textContent;
     var seg=function(a,k,cur){return '<div class="seg">'+a.map(function(x){return '<button data-'+k+'="'+x[0]+'" class="'+(String(x[0])==String(cur)?"on":"")+'">'+x[1]+'</button>'}).join("")+'</div>'};
     $("sb").innerHTML='<h3 style="margin:0 0 2px">Settings</h3><small style="color:var(--muted)">Make WatchNext yours.</small>'+
     '<div class="sg"><p class="t">Account</p><div class="row2"><span><b>'+esc(nm)+'</b><br><small style="color:var(--muted)">'+esc(em)+'</small></span><span class="ms">'+WD.length+' watched</span></div></div>'+
-    '<div class="sg"><p class="t">Appearance</p>'+seg([["light","Light"],["dark","Dark"],["system","System"]],"th",th)+'</div>'+
+    '<div class="sg"><p class="t">Appearance</p>'+seg([["light","Light"],["dark","Dark"]],"th",th)+'</div>'+
     '<div class="sg"><p class="t">Playback</p><div class="row2"><span>Autoplay trailers</span><button class="sw '+(SET.auto?"on":"")+'" data-tg="auto" aria-label="Autoplay"></button></div>'+
     '<div class="row2"><span>Streaming region<br><small style="color:var(--muted)">Used for "Available on"</small></span><select id="sreg">'+REG.map(function(r){return '<option value="'+r[0]+'"'+(r[0]==RG?" selected":"")+'>'+r[1]+'</option>'}).join("")+'</select></div></div>'+
     '<div class="sg"><p class="t">Download quality</p>'+seg([[0,"720p"],[1,"1080p"],[2,"4K"]],"dq",SET.dq)+'</div>'+
@@ -916,7 +917,7 @@ var STREAM_CUSTOMER_CODE = "";
   }
   function posterCheck(el){
     if(el.__pc||!el.style)return;var bi=el.style.backgroundImage||"";
-    var mm=bi.match(/^url\(["']?(https?:[^"')]+)["']?\)/);if(!mm)return;
+    var mm=bi.match(/^url\(["']?((?:https?:|\/api\/)[^"')]+)["']?\)/);if(!mm)return;
     el.__pc=1;var url=mm[1],im=new Image();im.referrerPolicy="no-referrer";
     im.onerror=function(){BAD[url]=1;posterFail(el,url)};
     im.onload=function(){if(im.naturalWidth<20){BAD[url]=1;posterFail(el,url)}};
@@ -1085,10 +1086,13 @@ var STREAM_CUSTOMER_CODE = "";
   function net(){var o=!navigator.onLine;$("off").hidden=!o;$("grid").style.display=o?"none":"";$("pager").style.display=o?"none":""}
   window.addEventListener("offline",net);window.addEventListener("online",function(){net();toast("Back online");loadThen()});
   $("retry").onclick=function(){if(navigator.onLine){net();loadThen()}else toast("Still offline")};
-  var THS=["light","dark","system"];
-  $("theme").onclick=function(e){var t=e.target.dataset&&e.target.dataset.t;if(!t)return;var r=document.documentElement;if(t=="system")r.removeAttribute("data-theme");else r.setAttribute("data-theme",t);
-    this.querySelectorAll("button").forEach(function(b){b.className=b.dataset.t==t?"on":""});$("th").style.transform="translateX("+THS.indexOf(t)*32+"px)"};
-  $("th").style.transform="translateX(64px)";
+  var THS=["light","dark"];
+  function setTheme(t){if(THS.indexOf(t)<0)t="dark";document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("wn-theme",t)}catch(e){}
+    document.querySelectorAll("#theme button").forEach(function(b){b.className=b.dataset.t==t?"on":""});
+    $("th").style.transform="translateX("+THS.indexOf(t)*32+"px)";
+    var mc=document.querySelector('meta[name="theme-color"]');if(mc)mc.setAttribute("content",t=="light"?"#f5f6ff":"#070914")}
+  $("theme").onclick=function(e){var t=e.target.dataset&&e.target.dataset.t;if(t)setTheme(t)};
+  setTheme(document.documentElement.getAttribute("data-theme"));
   var PK=[];
   function wel(){var W=$("wel");if(W)W.remove();document.body.classList.remove("pre");document.body.style.overflow=""}
   function dots(n){return '<div class="dots"><i class="'+(n==1?"on":"")+'"></i><i class="'+(n==2?"on":"")+'"></i></div>'}
@@ -1096,7 +1100,7 @@ var STREAM_CUSTOMER_CODE = "";
   function w2(){$("wel").innerHTML='<div class="wbox"><h2>What do you like to watch?</h2><p>Pick a few genres and we\u2019ll start there. You can change this anytime.</p><div class="wch" id="wc"></div><button class="go" id="w2">Enter WatchNext</button>'+dots(2)+'</div>';
     GENRES.slice(1).forEach(function(g){var c=document.createElement("button");c.className="chip"+(PK.indexOf(g)>-1?" on":"");c.textContent=ICON[g]+" "+g;c.onclick=function(){var i=PK.indexOf(g);if(i>-1)PK.splice(i,1);else PK.push(g);c.classList.toggle("on")};$("wc").appendChild(c)});$("w2").onclick=enter}
   function enter(){try{sessionStorage.setItem("mg",1)}catch(e){}var W=$("wel");W.classList.add("out");document.body.style.overflow="";document.body.classList.remove("pre");setTimeout(function(){W.remove()},1100);if(PK.length){st.g=PK[0];buildChips();loadThen()}}
-  var FQ=[["How do I get movie recommendations?","Search a title or pick a category from the dock, then tap any movie. You will see similar picks based on shared genres."],["Can I watch or download movies here?","Open any movie and use the Watch and Download circles at the bottom of the card."],["Why are 1080p and 4K locked?","Those download qualities come with the Standard and Premium plans. Tap a locked quality or the Upgrade button to see the plans."],["How much can I download?","Free gives you 20 GB of download storage, Standard 50 GB and Premium 200 GB. The storage meter shows what you have used."],["How do I rate a movie?","Open the movie, switch to the Rating tab and tap the stars. The summary updates straight away."],["What happens if I go offline?","You will see an offline screen, and results reload by themselves when your connection returns."],["Can I change the theme?","Use the switch beside your profile for light, dark or system."]];
+  var FQ=[["How do I get movie recommendations?","Search a title or pick a category from the dock, then tap any movie. You will see similar picks based on shared genres."],["Can I watch or download movies here?","Open any movie and use the Watch and Download circles at the bottom of the card."],["Why are 1080p and 4K locked?","Those download qualities come with the Standard and Premium plans. Tap a locked quality or the Upgrade button to see the plans."],["How much can I download?","Free gives you 20 GB of download storage, Standard 50 GB and Premium 200 GB. The storage meter shows what you have used."],["How do I rate a movie?","Open the movie, switch to the Rating tab and tap the stars. The summary updates straight away."],["What happens if I go offline?","You will see an offline screen, and results reload by themselves when your connection returns."],["Can I change the theme?","Use the switch beside your profile to flip between light and dark."]];
   function faq(f){f.innerHTML="";FQ.forEach(function(q){var w=document.createElement("div");w.className="ac";w.innerHTML='<button class="aq" aria-expanded="false"><span>'+q[0]+'</span><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="aa"><div><p>'+q[1]+'</p></div></div>';var b=w.firstChild;b.onclick=function(){var o=!w.classList.contains("open");f.querySelectorAll(".ac.open").forEach(function(x){x.classList.remove("open");x.firstChild.setAttribute("aria-expanded","false")});if(o){w.classList.add("open");b.setAttribute("aria-expanded","true")}};f.appendChild(w)})}
   var I={play:'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',pause:'<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>'};
   var pT=null,pos=0,dur=1,playing=false;

@@ -549,8 +549,8 @@ body.spo #up{display:none!important}
 
 /* ===== cinematic detail hero (poster click) ===== */
 #mv .hz{--hzi:none;position:relative;min-height:min(100vh,920px);display:flex;flex-direction:column;justify-content:center;padding:96px 0 52px;color:#fff;background-color:#070c34;
-  background-image:linear-gradient(90deg,rgba(6,10,48,.95) 0%,rgba(9,16,70,.74) 36%,rgba(9,16,70,.2) 68%,rgba(6,10,48,.5) 100%),linear-gradient(180deg,rgba(6,10,48,.6) 0%,rgba(6,10,48,0) 24%,rgba(6,10,48,0) 60%,var(--bg) 100%),var(--hzi);
-  background-size:auto,auto,cover;background-position:0 0,0 0,center 20%;background-repeat:no-repeat}
+  background-image:linear-gradient(180deg,rgba(11,14,26,0) 0%,rgba(11,14,26,0) 52%,color-mix(in srgb,var(--bg) 35%,transparent) 68%,color-mix(in srgb,var(--bg) 78%,transparent) 84%,var(--bg) 100%),linear-gradient(180deg,rgba(6,10,48,.6) 0%,rgba(6,10,48,0) 24%),linear-gradient(90deg,rgba(6,10,48,.95) 0%,rgba(9,16,70,.74) 36%,rgba(9,16,70,.2) 68%,rgba(6,10,48,.5) 100%),var(--hzi);
+  background-size:auto,auto,auto,cover;background-position:0 0,0 0,0 0,center 20%;background-repeat:no-repeat}
 .hzm{width:100%;max-width:1360px;margin:0 auto;padding:0 clamp(20px,4.5vw,64px);display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,470px);gap:clamp(24px,4vw,64px);align-items:center}
 .hzl{max-width:640px;align-self:end}
 .hzg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
@@ -1064,7 +1064,6 @@ var STREAM_CUSTOMER_CODE = "";
       '<h3 class="mvs">Cast</h3><div class="mvcr">'+cast.map(function(c){return '<div class="cst"><div class="cp" data-p="'+esc(c.p||"")+'">'+(c.p?"":esc(c.n.charAt(0)))+'</div><b>'+esc(c.n)+'</b><small>'+esc(c.c||"")+'</small></div>'}).join("")+'</div>'+
       (tr.length?'<h3 class="mvs">Trailers</h3><div class="mvcr">'+tr.map(function(t){return '<div class="tr" data-k="'+esc(t.k)+'"><div class="tri" data-p="https://i.ytimg.com/vi/'+esc(t.k)+'/hqdefault.jpg"><span>\u25B6</span></div><b>'+esc(t.n||"Trailer")+'</b><small>'+esc(t.t||"")+'</small></div>'}).join("")+'</div>':'')+
       '<h3 class="mvs">Comments <small id="mvcn"></small></h3><div class="cmb"><input id="mvci" placeholder="Leave a comment\u2026" maxlength="300"><button id="mvcp">Post</button></div><div id="mvcl"></div>'+
-      '<h3 class="mvs">You Might Also Like</h3><div class="rwt" id="mvsim"></div>'+
       '<div class="mvf"><div class="logo">Watch<span>Next</span></div><p>WatchNext does not host, store or distribute any media files. Movie data and images courtesy of TMDB.</p></div></div>';
     el.querySelector(".hz").style.setProperty("--hzi",img?'url("'+img+'")':grad(m));
     Array.prototype.forEach.call(el.querySelectorAll("[data-p]"),function(x){if(x.dataset.p)x.style.backgroundImage='url("'+x.dataset.p+'")'});
@@ -1077,8 +1076,8 @@ var STREAM_CUSTOMER_CODE = "";
     $("mvcp").onclick=function(){var v=$("mvci").value.trim();if(!v)return;(CM[m[0]]=CM[m[0]]||[]).push({n:document.querySelector(".ph b").textContent,t:v,ts:Date.now()});cmSave();$("mvci").value="";mvCm(m)};
     $("mvci").addEventListener("keydown",function(e){if(e.key=="Enter")$("mvcp").click()});
     mvCm(m);mvWl(m);mvWd(m);
-    var sim=(HZS[m[6]]||similar(m)).slice(0,12);fillRow($("mvsim"),sim);hzFill(m,sim);
-    if(LIVE&&m[6]&&!mvDraw.f[m[6]]){mvDraw.f[m[6]]=1;api("type=similar&id="+m[6]).then(function(r){add(r.results);var ids=r.results.map(function(t){return t.id}),it=ids.map(function(i){return M.filter(function(x){return x[6]==i})[0]}).filter(Boolean).filter(function(x){return x!==m});if(it.length){HZS[m[6]]=it}if(it.length&&cur===m&&$("mvsim")){fillRow($("mvsim"),it);hzFill(m,it)}}).catch(function(){})}}
+    var sim=(HZS[m[6]]||similar(m)).slice(0,12);hzFill(m,sim);
+    if(LIVE&&m[6]&&!mvDraw.f[m[6]]){mvDraw.f[m[6]]=1;api("type=similar&id="+m[6]).then(function(r){add(r.results);var ids=r.results.map(function(t){return t.id}),it=ids.map(function(i){return M.filter(function(x){return x[6]==i})[0]}).filter(Boolean).filter(function(x){return x!==m});if(it.length){HZS[m[6]]=it}if(it.length&&cur===m&&$("hzr")){hzFill(m,it)}}).catch(function(){})}}
   mvDraw.f={};
   document.addEventListener("keydown",function(e){if(e.key=="Escape"&&$("mv").classList.contains("open")&&!document.querySelector(".ov.open,.pl.open"))closeDetail()});
   Array.prototype.forEach.call(document.querySelectorAll(".dock button"),function(b){b.addEventListener("click",closeDetail)});$("dk-home").addEventListener("click",closeSP);

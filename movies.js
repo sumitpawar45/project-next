@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
   // Image proxy: some networks/ISPs block image.tmdb.org, so posters are served from your own domain.
   if (type === "img") {
     const ip = String(req.query.p || "");
-    if (!/^\/(w92|w154|w185|w342|w500|w780|original)\/[\w-]+\.(jpg|jpeg|png|webp)$/.test(ip)) return res.status(400).end();
+    if (!/^\/(w92|w154|w185|w342|w500|w780|w1280|original)\/[\w-]+\.(jpg|jpeg|png|webp)$/.test(ip)) return res.status(400).end();
     try {
       const r = await fetch("https://image.tmdb.org/t/p" + ip);
       if (!r.ok) return res.status(404).end();
@@ -70,7 +70,8 @@ module.exports = async (req, res) => {
         seasons: isTV ? d.number_of_seasons || 0 : 0,
         episodes: isTV ? d.number_of_episodes || 0 : 0,
         platforms: [...new Set(names)].slice(0, 6),
-        poster: ""
+        poster: "",
+        backdrop: d.backdrop_path ? "/api/movies?type=img&p=/w1280" + d.backdrop_path : ""
       };
       // fall back to OMDb for anything TMDB left empty
       const imdb = d.imdb_id || (d.external_ids || {}).imdb_id;

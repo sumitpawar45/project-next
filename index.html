@@ -592,10 +592,9 @@ body.spo #up{display:none!important}
 
 /* ===== matrix-rain site background (follows light/dark theme) ===== */
 html{background:var(--bg)}
-body{background:transparent!important}
-#mxr{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;display:block}
-html.mxo #mxr{z-index:79}
-#mv,#sp{background:transparent!important}
+#mxr{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;display:none}
+html.mxh #mxr{display:block}
+html.mxh body{background:transparent!important}
 /* no recommended-poster strip under the buttons on narrow screens */
 @media(max-width:900px){.hzr{display:none!important}}
 </style>
@@ -1311,7 +1310,7 @@ document.addEventListener("keydown",function(e){if(e.key=="Escape")t(false)})})(
   function tick(t){var dt=Math.min((t-last)/1000,.05);last=t;el+=dt*1000;acc+=dt;
     if(acc>=.05){draw(acc);acc=0}
     raf=(!document.hidden&&!rm.matches)?requestAnimationFrame(tick):0}
-  function start(){if(raf||document.hidden||rm.matches)return;last=performance.now();raf=requestAnimationFrame(tick)}
+  function start(){if(raf||document.hidden||rm.matches||!on)return;last=performance.now();raf=requestAnimationFrame(tick)}
   function stop(){if(raf){cancelAnimationFrame(raf);raf=0}}
   function refresh(){theme();W=0;fit();if(rm.matches)stat()}
   var rt;window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){fit();if(rm.matches)stat()},120)});
@@ -1321,10 +1320,14 @@ document.addEventListener("keydown",function(e){if(e.key=="Escape")t(false)})})(
   var onRm=function(){if(rm.matches){stop();stat()}else{paintBg();start()}};
   if(rm.addEventListener)rm.addEventListener("change",onRm);
   new MutationObserver(refresh).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
-  var mv=document.getElementById("mv"),sp=document.getElementById("sp");
-  function ov(){document.documentElement.classList.toggle("mxo",!!((mv&&mv.classList.contains("open"))||(sp&&sp.classList.contains("open"))))}
-  [mv,sp].forEach(function(e){if(e)new MutationObserver(ov).observe(e,{attributes:true,attributeFilter:["class"]})});
-  theme();fit();if(rm.matches)stat();else{draw(0);start()}
+  var mv=document.getElementById("mv"),sp=document.getElementById("sp"),rsh=document.getElementById("rsh"),on=false,qt=0;
+  function home(){return !((mv&&mv.classList.contains("open"))||(sp&&sp.classList.contains("open"))||document.querySelector(".wel")||(rsh&&!rsh.hidden))}
+  function sync(){qt=0;var h=home();if(h===on)return;on=h;document.documentElement.classList.toggle("mxh",h);
+    if(h){W=0;fit();if(rm.matches)stat();else{draw(0);start()}}else stop()}
+  function q(){if(!qt)qt=requestAnimationFrame(sync)}
+  new MutationObserver(q).observe(document.body,{attributes:true,subtree:true,attributeFilter:["class","hidden"]});
+  new MutationObserver(q).observe(document.body,{childList:true});
+  theme();sync();
 })();
 </script>
 </body>

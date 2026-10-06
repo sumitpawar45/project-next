@@ -689,12 +689,13 @@ try {
      "youtube:VIDEO_ID"             YouTube (set the video to Unlisted)   e.g. "youtube:dQw4w9WgXcQ"
      "bunny:LIBRARY_ID/VIDEO_ID"    Bunny Stream                          e.g. "bunny:12345/abcd-ef01-..."
      "https://....mp4"              a direct video link you host (R2, your server, etc.)
+     "archive:ITEM_ID"              Internet Archive item (or paste its /details/ or /embed/ link)
      "VIDEO_ID"                     Cloudflare Stream Video ID (plain, no prefix)
    Only use videos you have the legal right to stream.
    ===================================================================== */
 var STREAM_VIDEOS = {
   "1269325": "https://archive.org/details/drishyam-the.-conclusion.-2026.720p",
-  "603":   "REPLACE_ME",
+  "103": "https://archive.org/embed/taxi-driver-film-with-analysis",
   "-1399": "REPLACE_ME"
 };
 /* Optional: your Stream customer code (the part after "customer-"). Leave "" to skip. */
@@ -911,8 +912,7 @@ var STREAM_CUSTOMER_CODE = "";
     var ALW="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen";
     if(/^REPLACE/i.test(vid))vid="";
     if((yt=/^youtube:([A-Za-z0-9_-]{11})$/.exec(vid)))src="https://www.youtube-nocookie.com/embed/"+yt[1]+"?autoplay=1&rel=0&playsinline=1";
-    else if((ia=/^archive:([A-Za-z0-9._-]+)$/.exec(vid)))src="https://archive.org/embed/"+ia[1];
-    else if(/^https:\/\/archive\.org\/embed\/[^\s"'<>]+$/i.test(vid))src=vid;
+    else if((ia=/^(?:archive:|https?:\/\/(?:www\.)?archive\.org\/(?:details|embed)\/)([A-Za-z0-9._-]+)(?:\/[^?#\s]*)?(?:[?#]\S*)?$/i.exec(vid)))src="https://archive.org/embed/"+ia[1];
     else if((bn=/^bunny:(\d{1,10})\/([A-Za-z0-9-]{8,64})$/.exec(vid)))src="https://iframe.mediadelivery.net/embed/"+bn[1]+"/"+bn[2]+"?autoplay=true&preload=true";
     else if(/^https:\/\/[^\s"'<>]+$/i.test(vid))mp4=vid;
     else if(/^[A-Za-z0-9_-]{8,64}$/.test(vid)){var code=String(STREAM_CUSTOMER_CODE||"").replace(/^customer-/,"").trim();

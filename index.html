@@ -412,6 +412,13 @@ nav,.sbox,.rail,.tog,.faqb,.plb,.card,.rb.on{border:1.5px solid var(--sk)!import
 #stg iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 #stg .snv{white-space:pre-line;position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;color:#fff;font-weight:600;font-size:17px}
 .lcb{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-top:14px}
+/* direct full-screen player: no title, no 'Watch trailer' button, no card */
+#lcv{padding:0;background:#000;place-items:stretch;backdrop-filter:none;-webkit-backdrop-filter:none}
+#lcv .sheet{width:100%;max-width:none;height:100%;max-height:none;border:0;border-radius:0;background:#000;overflow:hidden}
+#lcv .lbody{padding:calc(52px + env(safe-area-inset-top,0px)) 0 env(safe-area-inset-bottom,0px);height:100%;box-sizing:border-box}
+#lcv .lct,#lcv .lcb{display:none}
+#lcv #stg{width:100%;height:100%;max-height:none;aspect-ratio:auto;border:0;border-radius:0}
+#lcv .x{top:calc(6px + env(safe-area-inset-top,0px));right:12px;width:40px;height:40px;font-size:22px;background:rgba(255,255,255,.14)}
 
 /* ===== rows + dock ===== */
 .rail,.bar{display:none!important}
